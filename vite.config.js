@@ -8,7 +8,9 @@ export default defineConfig({
     https: true,
     proxy: {},
   },
-  plugins: [sveltekit(), mkcert(), crossOriginIsolation()],
+  plugins: [
+    sveltekit(), mkcert(), crossOriginIsolation()
+  ],
 	optimizeDeps: {
 		exclude: ['sqlocal'],
 	},
