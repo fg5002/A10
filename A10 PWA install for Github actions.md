@@ -268,6 +268,39 @@ git push
 ```
 ---
 
+## Set up SQLocal
+### 1. Install vite-plugin-cross-origin-isolation
+```bash
+npm i -D vite-plugin-cross-origin-isolation
+```
+### 2. Install vite-plugin-mkcert
+```bash
+npm install vite-plugin-mkcert
+```
+### 4. Install SQLocal
+```bash
+npm install sqlocal
+```
+### 4. vite.config.js
+```js
+import { sveltekit } from '@sveltejs/kit/vite';
+import { defineConfig } from 'vite';
+import mkcert from 'vite-plugin-mkcert';
+import crossOriginIsolation from 'vite-plugin-cross-origin-isolation';
+
+export default defineConfig({
+  server: {
+    https: true,
+    proxy: {},
+  },
+  plugins: [sveltekit(), mkcert(), crossOriginIsolation()],
+	optimizeDeps: {
+		exclude: ['sqlocal'],
+	},
+});
+```
+---
+
 ## Create Map page
 ### 1. install Leaflet
 ```bash

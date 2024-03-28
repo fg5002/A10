@@ -26,7 +26,12 @@
 		"prettier-plugin-tailwindcss": "^0.5.9",
 		"svelte": "^4.2.7",
 		"tailwindcss": "^3.3.6",
-		"vite": "^5.0.3"
+		"vite": "^5.0.3",
+		"vite-plugin-cross-origin-isolation": "^0.1.6"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"sqlocal": "^0.7.1",
+		"vite-plugin-mkcert": "^1.17.5"
+	}
 }
