@@ -34,8 +34,8 @@ npm install
 ### 4. Init Git
 ```bash
 git init
-git add .
 git branch -M main
+git add .
 git commit -m "initial commit"
 ```
 ---
@@ -130,7 +130,8 @@ jobs:
 ### 5. Add to remote repo to Git and upload to Github
 ```bash
 git remote add origin git@github.com:fg5002/A10.git
-git commit -a -m "commit..."
+git add .
+git commit -m "..."
 npm run build
 git push -u origin main
 ```
