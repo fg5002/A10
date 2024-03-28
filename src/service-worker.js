@@ -43,8 +43,22 @@ self.addEventListener('fetch', (event) => {
 			const response = await cache.match(url.pathname);
 
 			if (response) {
-				return response;
+
+        const newHeaders = new Headers(response.headers);
+        newHeaders.set("Cross-Origin-Embedder-Policy", "require-corp");
+        newHeaders.set("Cross-Origin-Opener-Policy", "same-origin");
+
+        const moddedResponse = new Response(response.body, {
+          status: response.status,
+          statusText: response.statusText,
+          headers: newHeaders,
+        });
+
+        return moddedResponse;
+
+				//return response;
 			}
+      
 		}
 
 		// for everything else, try the network first, but
