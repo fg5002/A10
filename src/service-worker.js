@@ -43,20 +43,7 @@ self.addEventListener('fetch', (event) => {
 			const response = await cache.match(url.pathname);
 
 			if (response) {
-
-        const newHeaders = new Headers(response.headers);
-        newHeaders.set("Cross-Origin-Embedder-Policy", "require-corp");
-        newHeaders.set("Cross-Origin-Opener-Policy", "same-origin");
-
-        const moddedResponse = new Response(response.body, {
-          status: response.status,
-          statusText: response.statusText,
-          headers: newHeaders,
-        });
-
-        return moddedResponse;
-
-				//return response;
+				return response;
 			}
       
 		}
@@ -76,7 +63,20 @@ self.addEventListener('fetch', (event) => {
 				cache.put(event.request, response.clone());
 			}
 
-			return response;
+      const newHeaders = new Headers(response.headers);
+      newHeaders.set("Cross-Origin-Embedder-Policy", "require-corp");
+      newHeaders.set("Cross-Origin-Opener-Policy", "same-origin");
+
+      const moddedResponse = new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers: newHeaders,
+      });
+
+      return moddedResponse;      
+
+			//return response;
+      
 		} catch (err) {
 			const response = await cache.match(event.request);
 
