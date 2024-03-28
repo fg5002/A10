@@ -135,7 +135,7 @@ git commit -m "..."
 npm run build
 git push -u origin main
 ```
-### 6. Github A10/settings/pages ->
+### 6. Github A10/settings/pages -> Source: Github Actions
 ---
 
 ## Setup PWA
