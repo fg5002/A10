@@ -26,5 +26,8 @@
 		"svelte": "^5.0.0",
 		"tailwindcss": "^3.4.9",
 		"vite": "^5.0.3"
+	},
+	"dependencies": {
+		"sqlocal": "^0.12.0"
 	}
 }
