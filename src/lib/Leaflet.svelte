@@ -2,7 +2,11 @@
   import 'leaflet/dist/leaflet.css';
   import L from 'leaflet';
   import { onMount, setContext } from 'svelte';
-  import {mapState} from '$lib/store';
+  import {mapState, sampleData, xxData} from '$lib/store';
+  import "leaflet.markercluster/dist/leaflet.markercluster.js";
+  import 'leaflet.markercluster/dist/MarkerCluster.css';
+  import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+  import 'leaflet.markercluster.layersupport';
 
 	let {children} = $props();
 
@@ -11,7 +15,8 @@
 
   setContext('map', ()=> map);
 
-  const latLngToLatlngArray = (a)=> [a.lat, a.lng].map(c=>parseFloat(c.toFixed(6)));
+  const latLngToLatLngArray = (a)=> [a.lat, a.lng].map(c=>parseFloat(c.toFixed(6)));
+
 
   onMount(()=> {
     map = L.map(mapContainer, {
@@ -19,11 +24,11 @@
       zoom: $mapState.zoom
     })
     .on('dragend', ()=> {
-      $mapState.center = latLngToLatlngArray(map.getCenter());
+      $mapState.center = latLngToLatLngArray(map.getCenter());
     })
     .on('zoomend', ()=> {
       $mapState.zoom = map.getZoom();
-      $mapState.center = latLngToLatlngArray(map.getCenter());
+      $mapState.center = latLngToLatLngArray(map.getCenter());
     })
     .on('baselayerchange', (e)=> {
       $mapState.baselayer= e.name;
@@ -38,7 +43,7 @@
       $mapState.overlays = $mapState.overlays.filter(d=> d!=e.name);
       console.log($mapState.overlays);
     });
-    
+
     return ()=> {
       map?.remove();
       map = undefined;
@@ -61,7 +66,7 @@
 </style>
 
 <div class="w-full h-full z-1000" bind:this={mapContainer}>
-  {#if map}
+  {#if map}  
     {@render children?.()}
   {/if}
 </div>

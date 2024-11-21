@@ -4,7 +4,7 @@ export const mapState = writable({
   center: [47.391857,19.03352], 
   zoom: 16,
   baselayer: 'OSM',
-  overlays: []
+  overlays: ['Sample']
 });
 
 export const sampleData = writable({
@@ -117,7 +117,14 @@ export const sampleData = writable({
         'type': 'Point',
         'coordinates': [19.0289339,47.391005],
       }
-    },
+    }   
+  ]
+});
+
+
+export const xxData = writable({
+  'type': 'FeatureCollection',
+  'features': [
     {
       'type': 'Feature',
       'properties': {
@@ -135,8 +142,24 @@ export const sampleData = writable({
       },
       'geometry': {
         'type': 'Point',
-        'coordinates': [19.132238,47.370548],
+        'coordinates': [19.03038,47.390248],
       }
-    }    
+    } 
+  ]
+});
+
+export const qwData = writable({
+  'type': 'FeatureCollection',
+  'features': [
+    {
+      'type': 'Feature',
+      'properties': {
+        data: 'Passionfruit',
+      },
+      'geometry': {
+        'type': 'Point',
+        'coordinates': [19.034538,47.390448],
+      }
+    }
   ]
 });

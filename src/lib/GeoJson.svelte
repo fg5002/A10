@@ -1,10 +1,10 @@
 <script>
   import L from 'leaflet';
-  import {getContext, onMount} from 'svelte';
+  import {getContext, hasContext, onMount} from 'svelte';
   import {mapState} from './store';
+	import MarkerCluster from './MarkerCluster.svelte';
   
   let {
-    name,
     data = [],
     fillcolor = 'yellowgreen', 
     color = 'black', 
@@ -16,22 +16,16 @@
 
   const map = getContext('map');
   const subGroup = getContext('subgroup');
+  const grouped = hasContext('subgroup');
   const markerCluster = getContext('markercluster');
+  const clustered = hasContext('markercluster');
+  const controlLayers = getContext('controllayers');
+  const haslayers = getContext('controllayers');
+  const layers = controlLayers();
 
-  $effect(()=> {
+  $effect(()=> { 
     geojson && geojson.clearLayers().addData(data);
-    if( geojson && subGroup){
-      subGroup().removeLayer(geojson);
-      subGroup().addLayer(geojson);
-    }
-    if(geojson && subGroup && markerCluster){
-      markerCluster().removeLayer(subGroup());
-      markerCluster().addLayer(subGroup());
-    }
-    if(geojson && markerCluster){
-      markerCluster().removeLayer(subGroup());
-      markerCluster().addLayer(geojson);
-    }
+    clustered && markerCluster().clearLayers().addLayer(subGroup());
   })
 
   const popupContent = (data)=> {
@@ -57,31 +51,16 @@
         opacity: 1.0,
         fillOpacity: 1.0  
       }
-    });  
-
-    if(subGroup){
-      geojson.addTo(subGroup());
-      if($mapState.overlays.includes(name)){
-        subGroup().addTo(map());    
-      }
-      if(markerCluster){
-        markerCluster().addLayer(geojson);
-        subGroup().addTo(map())
-      }
-      if(subGroup && markerCluster){
-        markerCluster().addLayer(subGroup());
-        //subGroup().addTo(markerCluster())
-      }
-    }else{
-      geojson.addTo(map());
-    }
+    });
+    
+    geojson.addTo(subGroup());
 
     return ()=> {
-      markerCluster && markerCluster().remove();
-      subGroup && subGroup().remove();
+      geojson.removeLayer(subGroup());
       geojson?.remove();
       geojson = undefined;
     };
+
   });
   
 </script>

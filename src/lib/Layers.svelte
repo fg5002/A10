@@ -1,6 +1,6 @@
 <script>
   import L from 'leaflet';
-  import {onDestroy, getContext, setContext, onMount} from 'svelte';
+  import {getContext, setContext, onMount} from 'svelte';
 
   let {
     position = 'topright',
@@ -15,7 +15,7 @@
   setContext('controllayers', ()=> controlLayers);
 
   onMount(()=> {
-    controlLayers = map() && L.control.layers({}, {}, options);
+    controlLayers = map() && L.control.layers({}, {}, {collapsed: false});
     controlLayers.setPosition(position);
     controlLayers.addTo(map());
 

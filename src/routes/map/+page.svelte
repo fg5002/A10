@@ -1,6 +1,6 @@
 <script>
   import Leaflet from "$lib/Leaflet.svelte"
-  import {sampleData} from '$lib/store';
+  import {sampleData, xxData, qwData} from '$lib/store';
   import Popup from "$lib/Popup.svelte";
   import CircleMarker from "$lib/CircleMarker.svelte";
   import Cursor from "$lib/Cursor.svelte";
@@ -9,7 +9,7 @@
   import SubGroup from "$lib/SubGroup.svelte";
   import Layers from "$lib/Layers.svelte";
   import TileLayer from "$lib/TileLayer.svelte";
-  //import MarkerCluster from "$lib/MarkerCluster.svelte";
+  import MarkerCluster from "$lib/MarkerCluster.svelte";
 
   let showcursor = $state(false);
 
@@ -64,15 +64,29 @@
       name={'Túristautak'}
       url={'http://{s}.map.turistautak.hu/tiles/turistautak/{z}/{x}/{y}.png'}
       options={{ minZoom:7, maxZoom:18, attribution: '&copy; Túristautak.hu', crossOrigin : true}}
-    />
+      />
+    
+    <MarkerCluster>      
 
-    <SubGroup name={"Sample"}>
-      <GeoJson data={$sampleData}/>
-    </SubGroup>     
+    <SubGroup name='Passionfruit'>
+      <GeoJson data={$qwData}/>
+    </SubGroup>
+    
+      <SubGroup name='Sample'>
+        <GeoJson data={$sampleData}/>
+      </SubGroup>
+
+    </MarkerCluster>
+    
+    <SubGroup name='Fruits'>
+      <GeoJson data={$xxData}/>
+    </SubGroup>
+
 
   </Layers>
+
     
-  <!--GeoJson name={"Sample"} data={$sampleData}/-->
+    
   
   <Control position={'bottomleft'}>
     <button 
