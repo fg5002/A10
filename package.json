@@ -28,8 +28,12 @@
 		"vite": "^5.0.3"
 	},
 	"dependencies": {
+		"@turf/distance": "^7.1.0",
+		"@turf/explode": "^7.1.0",
+		"@turf/helpers": "^7.1.0",
+		"@turf/nearest-point-on-line": "^7.1.0",
+		"@turf/polygon-to-line": "^7.1.0",
 		"leaflet": "^1.9.4",
-		"leaflet.featuregroup.subgroup": "^1.0.2",
 		"leaflet.markercluster": "^1.5.3",
 		"leaflet.markercluster.layersupport": "^2.0.1",
 		"sqlocal": "^0.12.0"
