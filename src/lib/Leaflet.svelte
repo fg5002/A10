@@ -2,7 +2,7 @@
   import 'leaflet/dist/leaflet.css';
   import L from 'leaflet';
   import { onMount, setContext } from 'svelte';
-  import {mapState, sampleData, xxData} from '$lib/store';
+  import {mapState} from '$lib/store';
   import "leaflet.markercluster/dist/leaflet.markercluster.js";
   import 'leaflet.markercluster/dist/MarkerCluster.css';
   import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
@@ -15,8 +15,8 @@
 
   setContext('map', ()=> map);
 
-  const latLngToLatLngArray = (a)=> [a.lat, a.lng].map(c=>parseFloat(c.toFixed(6)));
-
+  //const latLngToArr = (a)=> [a.lat, a.lng].map(c=>parseFloat(c.toFixed(6)));
+  const latLngToArr = (e)=> [e.lat, e.lng].map(d=> parseFloat(d.toFixed(6)));
 
   onMount(()=> {
     map = L.map(mapContainer, {
@@ -24,11 +24,11 @@
       zoom: $mapState.zoom
     })
     .on('dragend', ()=> {
-      $mapState.center = latLngToLatLngArray(map.getCenter());
+      $mapState.center = latLngToArr(map.getCenter());
     })
     .on('zoomend', ()=> {
       $mapState.zoom = map.getZoom();
-      $mapState.center = latLngToLatLngArray(map.getCenter());
+      $mapState.center = latLngToArr(map.getCenter());
     })
     .on('baselayerchange', (e)=> {
       $mapState.baselayer= e.name;

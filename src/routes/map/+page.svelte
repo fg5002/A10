@@ -1,6 +1,5 @@
 <script>
   import Leaflet from "$lib/Leaflet.svelte"
-  import {sampleData, xxData, qwData} from '$lib/store';
   import Popup from "$lib/Popup.svelte";
   import CircleMarker from "$lib/CircleMarker.svelte";
   import Cursor from "$lib/Cursor.svelte";
@@ -9,6 +8,7 @@
   import LayerSupport from "$lib/LayerSupport.svelte";
   import Layers from "$lib/Layers.svelte";
   import TileLayer from "$lib/TileLayer.svelte";
+  import {normalFruits, tropicalFruits, passionFruit} from '$lib/store';
 
   let showcursor = $state(false);
 
@@ -23,18 +23,17 @@
   }
 
   const addNewData = (c)=> {
-    [c[0], c[1]] = [c[1], c[0]];
     let f = {
       'type': 'Feature',
       'properties': {
-        data: `Zab-${$sampleData.features.length}`,
+        data: `Zab-${$normalFruits.features.length}`,
       },
       'geometry': {
         'type': 'Point',
         'coordinates': c,
       }
     }
-    $sampleData.features = [...$sampleData.features, f];
+    $normalFruits.features = [...$normalFruits.features, f];
   }
 
 </script>
@@ -66,15 +65,15 @@
       /> 
 
     <LayerSupport name='Passionfruit'>
-      <GeoJson data={$qwData}/>
+      <GeoJson data={$passionFruit}/>
     </LayerSupport>
     
-      <LayerSupport name='Sample'>
-        <GeoJson data={$sampleData}/>
+      <LayerSupport name='Normal fruits'>
+        <GeoJson data={$normalFruits}/>
       </LayerSupport>
     
-    <LayerSupport name='Fruits'>
-      <GeoJson data={$xxData}/>
+    <LayerSupport name='Tropical fruits'>
+      <GeoJson data={$tropicalFruits}/>
     </LayerSupport>
 
 

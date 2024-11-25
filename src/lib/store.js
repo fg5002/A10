@@ -4,10 +4,10 @@ export const mapState = writable({
   center: [47.391857,19.03352], 
   zoom: 16,
   baselayer: 'OSM',
-  overlays: ['Sample']
+  overlays: ['Normalfruits', 'Passionfruit']
 });
 
-export const sampleData = writable({
+export const normalFruits = writable({
   'type': 'FeatureCollection',
   'features': [
     {
@@ -51,7 +51,7 @@ export const sampleData = writable({
     {
       'type': 'Feature',
       'properties': {
-        data: 'Körtefa',
+        data: 'Körte',
       },
       'geometry': {
         'type': 'Point',
@@ -101,7 +101,7 @@ export const sampleData = writable({
     {
       'type': 'Feature',
       'properties': {
-        data: 'Kivi',
+        data: 'Alma',
       },
       'geometry': {
         'type': 'Point',
@@ -111,7 +111,7 @@ export const sampleData = writable({
     {
       'type': 'Feature',
       'properties': {
-        data: 'Mangó',
+        data: 'Szilva',
       },
       'geometry': {
         'type': 'Point',
@@ -122,7 +122,7 @@ export const sampleData = writable({
 });
 
 
-export const xxData = writable({
+export const tropicalFruits = writable({
   'type': 'FeatureCollection',
   'features': [
     {
@@ -138,7 +138,7 @@ export const xxData = writable({
     {
       'type': 'Feature',
       'properties': {
-        data: 'Licsi',
+        data: 'Mango',
       },
       'geometry': {
         'type': 'Point',
@@ -148,7 +148,7 @@ export const xxData = writable({
   ]
 });
 
-export const qwData = writable({
+export const passionFruit = writable({
   'type': 'FeatureCollection',
   'features': [
     {
@@ -157,8 +157,19 @@ export const qwData = writable({
         data: 'Passionfruit',
       },
       'geometry': {
-        'type': 'Point',
-        'coordinates': [19.034538,47.390448],
+        'type': 'Polygon',
+        'coordinates': [
+          [
+            [19.036025,47.390889],
+            [19.035532,47.390671],
+            [19.035049,47.390613],
+            [19.034856,47.390112],
+            [19.035929,47.389872],
+            [19.035907,47.390337],
+            [19.036519,47.390504],
+            [19.036025,47.390889]
+          ]
+        ],
       }
     }
   ]
