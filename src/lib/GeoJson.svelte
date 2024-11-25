@@ -1,8 +1,6 @@
 <script>
   import L from 'leaflet';
   import {getContext, hasContext, onMount} from 'svelte';
-  import {mapState} from './store';
-	import MarkerCluster from './MarkerCluster.svelte';
   
   let {
     data = [],
@@ -15,17 +13,11 @@
   let geojsonContainer = $state();
 
   const map = getContext('map');
-  const subGroup = getContext('subgroup');
-  const grouped = hasContext('subgroup');
-  const markerCluster = getContext('markercluster');
-  const clustered = hasContext('markercluster');
-  const controlLayers = getContext('controllayers');
-  const haslayers = getContext('controllayers');
-  const layers = controlLayers();
+  const layerSupport = getContext('layersupport');
+  const grouped = hasContext('layersupport');
 
   $effect(()=> { 
     geojson && geojson.clearLayers().addData(data);
-    clustered && markerCluster().clearLayers().addLayer(subGroup());
   })
 
   const popupContent = (data)=> {
@@ -53,11 +45,9 @@
       }
     });
     
-    geojson.addTo(subGroup());
+    geojson.addTo(grouped ? layerSupport() : map());
 
     return ()=> {
-      geojson.removeLayer(subGroup());
-      geojson?.remove();
       geojson = undefined;
     };
 
