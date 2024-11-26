@@ -1,5 +1,5 @@
 
-<div class="grid" style="grid-template-rows: 1fr env(keyboard-inset-height, 0px);">
+<div class="grid grid-rows-[1fr_keyboard-adjust]">
   <div class="flex flex-col items-center overflow-scroll font-bold bg-lime-300">
     <h1 class="my-4 text-2xl ">Welcome to FDC</h1>
     <div class="text-red-500 ">version 0.2.1</div> 

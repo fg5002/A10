@@ -17,6 +17,10 @@ export default {
         '200': '2.00',
         '250': '2.50',
         '300': '3.00',
+      },
+      gridTemplateRows: {
+        // Define your custom class
+        'keyboard-adjust': '1fr env(keyboard-inset-height, 0px)',
       }
 		}
 	},
