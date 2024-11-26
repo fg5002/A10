@@ -62,19 +62,19 @@
       name={'Túristautak'}
       url={'http://{s}.map.turistautak.hu/tiles/turistautak/{z}/{x}/{y}.png'}
       options={{ minZoom:7, maxZoom:18, attribution: '&copy; Túristautak.hu', crossOrigin : true}}
-      /> 
+    /> 
 
-    <LayerSupport name='Passionfruit'>
-      <GeoJson data={$passionFruit}/>
+    <LayerSupport name='Normal fruits'>
+      <GeoJson data={$normalFruits}/>
     </LayerSupport>
-    
-      <LayerSupport name='Normal fruits'>
-        <GeoJson data={$normalFruits}/>
-      </LayerSupport>
-    
+  
     <LayerSupport name='Tropical fruits'>
       <GeoJson data={$tropicalFruits}/>
     </LayerSupport>
+
+    <LayerSupport name='Passionfruit'>
+      <GeoJson data={$passionFruit}/>
+    </LayerSupport>    
 
 
   </Layers>

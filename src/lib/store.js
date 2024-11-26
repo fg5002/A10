@@ -4,7 +4,7 @@ export const mapState = writable({
   center: [47.391857,19.03352], 
   zoom: 16,
   baselayer: 'OSM',
-  overlays: ['Normalfruits', 'Passionfruit']
+  overlays: ['Normal fruits', 'Passionfruit']
 });
 
 export const normalFruits = writable({

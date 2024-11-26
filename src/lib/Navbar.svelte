@@ -1,11 +1,8 @@
 <script>
   import { base } from '$app/paths';
-
 </script>
 
-<div class="flex items-center justify-between p-2 text-lg font-bold border shadow-xl bg-lime-300 border-slate-500">
-  <nav class="flex items-center gap-4">
-    <a href="{base}/">Home</a>
-    <a href="{base}/map">Map</a>
-  </nav>
-</div>
+<nav class="flex items-center gap-4 p-2 m-0 text-xl font-bold bg-lime-400">
+  <a href="{base}/">Home</a>
+  <a href="{base}/map">Map</a>
+</nav>
