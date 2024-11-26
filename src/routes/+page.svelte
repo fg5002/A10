@@ -1,5 +1,5 @@
 
-<div class="grid" style="grid-template-rows: 1fr env(keyboard-inset-height, 0px);" in:fade out:fade>
+<div class="grid" style="grid-template-rows: 1fr env(keyboard-inset-height, 0px);">
   <div class="flex flex-col items-center overflow-scroll font-bold bg-lime-300">
     <h1 class="my-4 text-2xl ">Welcome to FDC</h1>
     <div class="text-red-500 ">version 0.2.1</div> 
@@ -9,5 +9,5 @@
       Senectus et netus et malesuada. Nunc pulvinar sapien et ligula ullamcorper malesuada proin. Neque convallis a cras semper auctor. Libero id faucibus nisl tincidunt eget. Leo a diam sollicitudin tempor id. A lacus vestibulum sed arcu non odio euismod lacinia.
     </div>  
   </div>
-  <div class="bg-cyan-300"  in:fade out:fade></div>
+  <div class="bg-cyan-300"></div>
 </div>
