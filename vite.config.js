@@ -12,7 +12,7 @@ export default defineConfig({
     sveltekit(),
     mkcert(),
     crossOriginIsolation(),
-    /*{ 
+    { 
       name: 'configure-response-headers', 
       configureServer: (server) => { 
         server.middlewares.use((_req, res, next) => { 
@@ -21,7 +21,7 @@ export default defineConfig({
           next(); 
         }); 
       }, 
-    },*/ 
+    }, 
   ],  
   optimizeDeps: {  
     exclude: ['sqlocal'],  
