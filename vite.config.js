@@ -1,17 +1,9 @@
 import { sveltekit } from '@sveltejs/kit/vite'; 
-import { defineConfig } from 'vite';
-import mkcert from 'vite-plugin-mkcert';
-import crossOriginIsolation from 'vite-plugin-cross-origin-isolation';
+import { defineConfig } from 'vite'; 
 
-export default defineConfig({
-  server: {
-    https: true,
-    proxy: {}
-  },
+export default defineConfig({ 
   plugins: [ 
-    sveltekit(),
-    mkcert(),
-    crossOriginIsolation(),
+    sveltekit(), 
     { 
       name: 'configure-response-headers', 
       configureServer: (server) => { 
