@@ -1,7 +1,7 @@
 {
 	"id": "ffd-A10-pwa",
 	"short_name": "A10",
-	"start_url": "/A10/",
+	"start_url": "/",
 	"scope": "/A10/",
 	"display": "standalone",
 	"orientation": "portrait",
