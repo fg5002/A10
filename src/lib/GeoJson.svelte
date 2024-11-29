@@ -13,11 +13,15 @@
   let geojsonContainer = $state();
 
   const map = getContext('map');
-  const layerSupport = getContext('layersupport');
-  const grouped = hasContext('layersupport');
+  const subGroup = getContext('subgroup');
+  const grouped = hasContext('subgroup');
+  const markerCluster = getContext('markercluster');
+  const clustered = hasContext('markercluster')
 
   $effect(()=> { 
+    clustered && geojson && markerCluster().removeLayer(geojson);
     geojson && geojson.clearLayers().addData(data);
+    clustered && geojson && markerCluster().addLayer(geojson);
   })
 
   const popupContent = (data)=> {
@@ -45,9 +49,10 @@
       }
     });
     
-    geojson.addTo(grouped ? layerSupport() : map());
+    geojson.addTo(grouped ? subGroup() : clustered ? markerCluster() : map());
 
     return ()=> {
+      geojson?.remove();
       geojson = undefined;
     };
 

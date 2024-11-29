@@ -6,6 +6,8 @@
   import Control from "$lib/Control.svelte";
   import GeoJson from "$lib/GeoJson.svelte";
   import LayerSupport from "$lib/LayerSupport.svelte";
+  import MarkerCluster from "$lib/MarkerCluster.svelte";
+  import SubGroup from "$lib/SubGroup.svelte";
   import Layers from "$lib/Layers.svelte";
   import TileLayer from "$lib/TileLayer.svelte";
   import {normalFruits, tropicalFruits, passionFruit} from '$lib/store';
@@ -64,17 +66,20 @@
       options={{ minZoom:7, maxZoom:18, attribution: '&copy; Túristautak.hu', crossOrigin : true}}
     /> 
 
-    <LayerSupport name='Normal fruits'>
-      <GeoJson data={$normalFruits}/>
-    </LayerSupport>
-  
-    <LayerSupport name='Tropical fruits'>
-      <GeoJson data={$tropicalFruits}/>
-    </LayerSupport>
-
-    <LayerSupport name='Passionfruit'>
+    <MarkerCluster>
+      <SubGroup name='Normalfruits'>
+        <GeoJson data={$normalFruits}/>
+      </SubGroup>
+      
+      
+    </MarkerCluster>
+    
+    <GeoJson data={$tropicalFruits}/>
+      
+    <SubGroup name='Passionfruit'>
       <GeoJson data={$passionFruit}/>
-    </LayerSupport>    
+    </SubGroup>
+
 
 
   </Layers>

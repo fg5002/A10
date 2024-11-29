@@ -5,31 +5,33 @@
   import 'leaflet.markercluster/dist/MarkerCluster.css';
   import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 
-  let markerCluster;
-  let markerClusterContainer;
+	let {children} = $props();
+
+  let markercluster = $state();
+  let markerclusterContainer = $state();
 
   const map = getContext('map');
 
-  setContext('markercluster', ()=> markerCluster);
+  setContext('markercluster', ()=> markercluster);
 
   onMount(()=> {
 
-    markerCluster = map() && L.markerClusterGroup({
+    markercluster = map() && L.markerClusterGroup({
       spiderfyOnMaxZoom: true,
       showCoverageOnHover: true,
       zoomToBoundsOnClick: true
     }).addTo(map());
 
     return ()=> {
-      markerCluster?.remove();
-      markerCluster = undefined;
+      markercluster?.remove();
+      markercluster = undefined;
     };
   });
 
 </script>
 
-<div bind:this={markerClusterContainer}>
-  {#if markerCluster}
-    <slot/>
+<div bind:this={markerclusterContainer}>
+  {#if markercluster}
+    {@render children?.()}
   {/if}
 </div>
