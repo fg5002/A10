@@ -1,9 +1,11 @@
 <script>
   import L from 'leaflet';
   import {getContext, hasContext, onMount} from 'svelte';
+  import {mapState} from '$lib/store';
   
   let {
     data = [],
+    name = '',
     fillcolor = 'yellowgreen', 
     color = 'black', 
     children
@@ -15,13 +17,14 @@
   const map = getContext('map');
   const subGroup = getContext('subgroup');
   const grouped = hasContext('subgroup');
-  const markerCluster = getContext('markercluster');
+  const deflate = getContext('deflate');
+  const deflated = hasContext('deflate')
   const clustered = hasContext('markercluster')
 
   $effect(()=> { 
-    clustered && geojson && markerCluster().removeLayer(geojson);
+    clustered && geojson && subGroup().removeLayer(geojson);
     geojson && geojson.clearLayers().addData(data);
-    clustered && geojson && markerCluster().addLayer(geojson);
+    clustered && geojson && subGroup().addLayer(geojson);
   })
 
   const popupContent = (data)=> {
@@ -49,7 +52,15 @@
       }
     });
     
-    geojson.addTo(grouped ? subGroup() : clustered ? markerCluster() : map());
+    if(grouped){
+      geojson.addTo(subGroup());
+      if($mapState.overlays.includes(name)){
+        subGroup().addTo(map());    
+      }
+    }else{
+      geojson.addTo(map());
+    }
+
 
     return ()=> {
       geojson?.remove();

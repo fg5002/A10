@@ -11,6 +11,7 @@
   import Layers from "$lib/Layers.svelte";
   import TileLayer from "$lib/TileLayer.svelte";
   import {normalFruits, tropicalFruits, passionFruit} from '$lib/store';
+  import Deflate from "$lib/Deflate.svelte";
 
   let showcursor = $state(false);
 
@@ -67,18 +68,22 @@
     /> 
 
     <MarkerCluster>
+      
       <SubGroup name='Normalfruits'>
-        <GeoJson data={$normalFruits}/>
+        <GeoJson name='Normalfruits' data={$normalFruits}/>
       </SubGroup>
-      
-      
+
     </MarkerCluster>
     
-    <GeoJson data={$tropicalFruits}/>
-      
-    <SubGroup name='Passionfruit'>
-      <GeoJson data={$passionFruit}/>
+    <SubGroup name='Tropicalfruits'>  
+      <GeoJson name='Tropicalfruits' data={$tropicalFruits}/>
     </SubGroup>
+    
+    <!--Deflate-->
+      <SubGroup name='Passionfruit'>
+        <GeoJson name='Passionfruit' data={$passionFruit}/>
+      </SubGroup>
+    <!--/Deflate-->
 
 
 

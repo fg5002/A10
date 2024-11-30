@@ -37,11 +37,11 @@
     .on('overlayadd', (e)=> {
       if($mapState.overlays.includes(e.name)) return;
       $mapState.overlays = [...$mapState.overlays, e.name];
-      console.log($mapState.overlays);
+      console.log('added', $mapState.overlays);
     })
     .on('overlayremove', (e)=> {
       $mapState.overlays = $mapState.overlays.filter(d=> d!=e.name);
-      console.log($mapState.overlays);
+      console.log('removed',$mapState.overlays);
     });
 
     return ()=> {

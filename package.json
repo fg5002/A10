@@ -34,6 +34,7 @@
 		"@turf/nearest-point-on-line": "^7.1.0",
 		"@turf/polygon-to-line": "^7.1.0",
 		"leaflet": "^1.9.4",
+		"Leaflet.Deflate": "^2.1.0",
 		"leaflet.featuregroup.subgroup": "^1.0.2",
 		"leaflet.markercluster": "^1.5.3",
 		"leaflet.markercluster.layersupport": "^2.0.1",
