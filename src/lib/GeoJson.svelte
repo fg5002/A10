@@ -17,14 +17,11 @@
   const map = getContext('map');
   const subGroup = getContext('subgroup');
   const grouped = hasContext('subgroup');
-  const deflate = getContext('deflate');
-  const deflated = hasContext('deflate')
-  const clustered = hasContext('markercluster')
 
   $effect(()=> { 
-    clustered && geojson && subGroup().removeLayer(geojson);
+    geojson && subGroup().removeLayer(geojson);
     geojson && geojson.clearLayers().addData(data);
-    clustered && geojson && subGroup().addLayer(geojson);
+    geojson && subGroup().addLayer(geojson);
   })
 
   const popupContent = (data)=> {
@@ -41,14 +38,16 @@
           {closeButton: false, offset: [0,-5]}
         )      
       },
-      pointToLayer: (feature, latlng)=> L.circleMarker(latlng),
+      pointToLayer: (feature, latlng)=> {
+        return feature.geometry.radius ? L.circle(latlng, feature.geometry.radius) : L.circleMarker(latlng)
+      },
       style: {      
         fillColor: fillcolor,
         radius: 7,
         color: color,
         weight: 1,
-        opacity: 1.0,
-        fillOpacity: 1.0  
+        opacity: 0.5,
+        fillOpacity: 0.5  
       }
     });
     

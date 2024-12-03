@@ -1,16 +1,22 @@
 <script>
   import L from 'leaflet';
-  import {getContext, hasContext, setContext, onMount} from 'svelte';
+  import {getContext, setContext, onMount} from 'svelte';
+  import 'leaflet.markercluster/dist/leaflet.markercluster.js';
+  import 'leaflet.markercluster/dist/MarkerCluster.css';
+  import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
   import 'Leaflet.Deflate/dist/L.Deflate.js';
 
-	let {children} = $props();
+	let {
+    fillcolor = 'yellowgreen', 
+    color = 'black',
+    children
+  } = $props();
 
   let deflate = $state();
   let deflateContainer = $state();
 
   const map = getContext('map');
-  const markerCluster = getContext('markercluster');
-  const clustered = hasContext('markercluster');
+  const markerCluster = L.markerClusterGroup();
 
   setContext('deflate', ()=> deflate);
 
@@ -20,15 +26,15 @@
       minSize: 80,
       markerType: L.circleMarker,
       markerOptions: {     
-        fillColor: 'yellowgreen',
+        fillColor: fillcolor,
         radius: 7,
-        color: 'black',
+        color: color,
         weight: 1,
         opacity: 1.0,
         fillOpacity: 1.0  
-      }  
-      //markerLayer: markerCluster()
-    }).addTo(clustered ? markerCluster() : map());
+      }, 
+      markerLayer: markerCluster
+    }).addTo(map());
 
     return ()=> {
       deflate?.remove();

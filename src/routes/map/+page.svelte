@@ -6,11 +6,10 @@
   import Control from "$lib/Control.svelte";
   import GeoJson from "$lib/GeoJson.svelte";
   import LayerSupport from "$lib/LayerSupport.svelte";
-  import MarkerCluster from "$lib/MarkerCluster.svelte";
   import SubGroup from "$lib/SubGroup.svelte";
   import Layers from "$lib/Layers.svelte";
   import TileLayer from "$lib/TileLayer.svelte";
-  import {normalFruits, tropicalFruits, passionFruit} from '$lib/store';
+  import {normalFruits, tropicalFruits, passionFruit, gps} from '$lib/store';
   import Deflate from "$lib/Deflate.svelte";
 
   let showcursor = $state(false);
@@ -60,38 +59,39 @@
       url={'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'}
       options={{ minZoom: 7, maxZoom: 19, attribution: '&copy; ESRI', crossOrigin : true}}
     />
-
+    <TileLayer
+      name={'Topo'}
+      url={'https://tile.opentopomap.org/{z}/{x}/{y}.png'}
+      options={{ minZoom: 7, maxZoom: 17, attribution: '&copy; Topomap', crossOrigin : true}}
+    />
     <TileLayer
       name={'Túristautak'}
       url={'http://{s}.map.turistautak.hu/tiles/turistautak/{z}/{x}/{y}.png'}
       options={{ minZoom:7, maxZoom:18, attribution: '&copy; Túristautak.hu', crossOrigin : true}}
     /> 
 
-    <MarkerCluster>
-      
+    <Deflate>
+    
       <SubGroup name='Normalfruits'>
         <GeoJson name='Normalfruits' data={$normalFruits}/>
       </SubGroup>
-
-    </MarkerCluster>
+      
+      <SubGroup name='Tropicalfruits'>  
+        <GeoJson name='Tropicalfruits' data={$tropicalFruits}/>
+      </SubGroup>  
     
-    <SubGroup name='Tropicalfruits'>  
-      <GeoJson name='Tropicalfruits' data={$tropicalFruits}/>
-    </SubGroup>
-    
-    <!--Deflate-->
       <SubGroup name='Passionfruit'>
-        <GeoJson name='Passionfruit' data={$passionFruit}/>
+          <GeoJson name='Passionfruit' data={$passionFruit}/>
       </SubGroup>
-    <!--/Deflate-->
+      
+    </Deflate>
 
-
+    <SubGroup name='Gps'>
+      <GeoJson name='Gps' data={$gps}/>
+    </SubGroup>
 
   </Layers>
 
-    
-    
-  
   <Control position={'bottomleft'}>
     <button 
       class="flex justify-center px-2 py-1 m-4 text-lg font-bold text-white bg-red-500 border-2 border-black rounded-md" 

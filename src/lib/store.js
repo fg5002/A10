@@ -4,7 +4,7 @@ export const mapState = writable({
   center: [47.391857,19.03352], 
   zoom: 16,
   baselayer: 'OSM',
-  overlays: ['Passionfruit']
+  overlays: ['Passionfruit','Gps']
 });
 
 export const normalFruits = writable({
@@ -170,6 +170,33 @@ export const passionFruit = writable({
             [19.036025,47.390889]
           ]
         ],
+      }
+    }
+  ]
+});
+
+export const gps = writable({
+  'type': 'FeatureCollection',
+  'features': [
+    {
+      'type': 'Feature',
+      'properties': {
+        data: 'Circle',
+      },
+      'geometry': {
+        'radius': 50,
+        'type': 'Point',
+        'coordinates': [19.032138,47.391548],
+      }
+    },
+    {
+      'type': 'Feature',
+      'properties': {
+        data: 'Point',
+      },
+      'geometry': {
+        'type': 'Point',
+        'coordinates': [19.032138,47.391548],
       }
     }
   ]

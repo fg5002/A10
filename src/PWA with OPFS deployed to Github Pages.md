@@ -310,3 +310,9 @@ return response;  //Delete this line from original file
 #### Install [Svelty Picker](https://mskocik.github.io/svelty-picker/)  
 - `npm install svelty-picker`
 ---
+### ToDo
+#### **Map**
+- gps watch
+- gps getpoint
+- store tylelayer
+- edit point positions

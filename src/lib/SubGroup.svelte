@@ -1,8 +1,7 @@
 <script>
   import L from 'leaflet';
   import "leaflet.featuregroup.subgroup";
-  import {getContext, setContext, hasContext, onMount, onDestroy} from 'svelte';
-  import {mapState} from '$lib/store';
+  import {getContext, setContext, hasContext, onMount} from 'svelte';
 
   let {children, name} = $props();
   
@@ -10,15 +9,13 @@
   
   const map = getContext('map');
   const controlLayers = getContext('controllayers');
-  const markerCluster = getContext('markercluster');
-  const clustered = hasContext('markercluster')
+  const deflate = getContext('deflate');
+  const deflated = hasContext('deflate');
 
   setContext('subgroup', ()=> subgroup);
   
-  //$effect(()=> clustered && markerCluster().removeLayer(subgroup).addLayer(subgroup));
-
   onMount(()=> {   
-    subgroup = map() && L.featureGroup.subGroup(clustered && markerCluster());
+    subgroup = map() && L.featureGroup.subGroup(deflated && deflate());
     controlLayers().addOverlay(subgroup, name);
     
     return () => {
