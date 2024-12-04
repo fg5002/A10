@@ -37,7 +37,6 @@
 		"Leaflet.Deflate": "^2.1.0",
 		"leaflet.featuregroup.subgroup": "^1.0.2",
 		"leaflet.markercluster": "^1.5.3",
-		"leaflet.markercluster.layersupport": "^2.0.1",
 		"sqlocal": "^0.12.0",
 		"vite-plugin-mkcert": "^1.17.6"
 	}

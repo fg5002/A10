@@ -5,15 +5,14 @@
   import Cursor from "$lib/Cursor.svelte";
   import Control from "$lib/Control.svelte";
   import GeoJson from "$lib/GeoJson.svelte";
-  import LayerSupport from "$lib/LayerSupport.svelte";
   import SubGroup from "$lib/SubGroup.svelte";
   import Layers from "$lib/Layers.svelte";
   import TileLayer from "$lib/TileLayer.svelte";
   import {normalFruits, tropicalFruits, passionFruit, gps} from '$lib/store';
   import Deflate from "$lib/Deflate.svelte";
 
-  let showcursor = $state(false);
 
+  let showcursor = $state(false);
 
   const onclick = (e) =>{
     addNewData(e);
@@ -60,11 +59,6 @@
       options={{ minZoom: 7, maxZoom: 19, attribution: '&copy; ESRI', crossOrigin : true}}
     />
     <TileLayer
-      name={'Topo'}
-      url={'https://tile.opentopomap.org/{z}/{x}/{y}.png'}
-      options={{ minZoom: 7, maxZoom: 17, attribution: '&copy; Topomap', crossOrigin : true}}
-    />
-    <TileLayer
       name={'Túristautak'}
       url={'http://{s}.map.turistautak.hu/tiles/turistautak/{z}/{x}/{y}.png'}
       options={{ minZoom:7, maxZoom:18, attribution: '&copy; Túristautak.hu', crossOrigin : true}}
@@ -81,13 +75,14 @@
       </SubGroup>  
     
       <SubGroup name='Passionfruit'>
-          <GeoJson name='Passionfruit' data={$passionFruit}/>
+        <GeoJson name='Passionfruit' data={$passionFruit}/>
       </SubGroup>
       
     </Deflate>
 
     <SubGroup name='Gps'>
-      <GeoJson name='Gps' data={$gps}/>
+      <GeoJson name='Gps' data={$gps}>
+      </GeoJson>
     </SubGroup>
 
   </Layers>
@@ -103,13 +98,13 @@
     <Cursor {onclick} />
   {/if}
 
-  <CircleMarker position ={[47.391857,19.03652]}>
+  <!--CircleMarker position ={[47.391857,19.03652]}>
     <Popup>
       <div class="flex flex-col justify-center w-64 gap-1 p-2 bg-yellow-200">
         <div class="font-bold whitespace-nowrap">Nagy fülemüle</div>
         <div class="italic whitespace-nowrap">Luscinia luscinia</div>
       </div>
     </Popup>   
-  </CircleMarker>
+  </CircleMarker-->
 
 </Leaflet>

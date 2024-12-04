@@ -16,7 +16,7 @@
 
   const map = getContext('map');
 
-  setContext('layer', {getLayer: ()=> circlemarker});
+  setContext('layer', ()=> circlemarker);
 
   onMount(()=> {
     circlemarker = map() && L.circleMarker(position, {
@@ -36,6 +36,7 @@
 	});
   
 </script>
+
 
 <div bind:this={circlemarkerContainer}>
   {#if circlemarker}

@@ -3,10 +3,6 @@
   import L from 'leaflet';
   import { onMount, setContext } from 'svelte';
   import {mapState} from '$lib/store';
-  import "leaflet.markercluster/dist/leaflet.markercluster.js";
-  import 'leaflet.markercluster/dist/MarkerCluster.css';
-  import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
-  import 'leaflet.markercluster.layersupport';
 
 	let {children} = $props();
 
@@ -15,7 +11,6 @@
 
   setContext('map', ()=> map);
 
-  //const latLngToArr = (a)=> [a.lat, a.lng].map(c=>parseFloat(c.toFixed(6)));
   const latLngToArr = (e)=> [e.lat, e.lng].map(d=> parseFloat(d.toFixed(6)));
 
   onMount(()=> {
@@ -41,7 +36,7 @@
     })
     .on('overlayremove', (e)=> {
       $mapState.overlays = $mapState.overlays.filter(d=> d!=e.name);
-      console.log('removed',$mapState.overlays);
+      console.log('removed', $mapState.overlays);
     });
 
     return ()=> {

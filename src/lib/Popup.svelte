@@ -1,34 +1,33 @@
 <script>
-  import L from 'leaflet';
-  import { onMount, getContext, setContext } from 'svelte';
+  import L, { divIcon } from 'leaflet';
+  import { onMount, getContext } from 'svelte';
 
-  let { 
+  let {
+    //content,
     children
   } = $props();
 
-  let popupContainer = $state();
 	let popup = $state();
+  let popupContainer = $state();
 
   let open = $state(false);
 
-  const { getLayer } = getContext('layer');
-	const layer = getLayer();
+  const layer = getContext('layer');
 
   onMount(()=> {
     popup = L.popup({
       closeButton : false,
       autoPanPadding: [80,80],
-      offset: [0,-5]
-    }).setContent(popupContainer);
+      offset: [0,-5],
+      //content: content
+    });
 
-    if(layer){
-      layer.bindPopup(popup);
-      layer.on('popupopen', ()=> {open = true});
-      layer.on('popupclose', ()=> {open = false});
-    }
+      layer() && layer().bindPopup(popup)
+      .on('popupopen', ()=> {open = true})
+      .on('popupclose', ()=> {open = false});
     
     return ()=> {
-      layer?.unbindPopup();
+      layer()?.unbindPopup();
       popup?.remove();
       popup = undefined;
     };
