@@ -60,8 +60,8 @@
         radius: 7,
         color: color,
         weight: 1,
-        opacity: 0.5,
-        fillOpacity: 0.5  
+        opacity: 1.0,
+        fillOpacity: 0.5
       }
     });
     
