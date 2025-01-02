@@ -4,7 +4,6 @@
 
   let {
     position = 'topright',
-    options = {},
     children
   } = $props();
 
@@ -15,7 +14,7 @@
   setContext('controllayers', ()=> controlLayers);
 
   onMount(()=> {
-    controlLayers = map() && L.control.layers({}, {}, {collapsed: false});
+    controlLayers = map() && L.control.layers({}, {}, {collapsed: true});
     controlLayers.setPosition(position);
     controlLayers.addTo(map());
 

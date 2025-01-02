@@ -9,6 +9,8 @@
   import * as turf from '@turf/helpers';
   import {mapState, normalFruits, tropicalFruits, passionFruit, gps} from '$lib/store';
 
+  //TODO bring showCursor inside the component
+
   let { 
     cursorPosition = $mapState.center,
     bgr = 'bg-orange-400',
@@ -34,11 +36,14 @@
     return 40075016.686 * Math.abs(Math.cos($mapState.center[0] * Math.PI/180)) / Math.pow(2, $mapState.zoom + 8) * 0.001 * n;
   }
 
+  // TODO snapped props?
   const snapTo=(d, p)=>{
     let dist = distance(d, p, {units: 'kilometers'});
     dist < pixelToMeter(15) && cursor.setLatLng(revArrToLatLng(d.geometry.coordinates));
   }
 
+  // TODO multipolygon?
+  // TODO filter args
   const cursorSnap=(e, ...args)=> {
     let p=turf.point(e);
     [...args].forEach(f=> {

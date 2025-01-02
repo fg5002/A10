@@ -9,27 +9,37 @@
   import Deflate from "$lib/Deflate.svelte";
   import Sidebar from "$lib/Sidebar.svelte";
   import Input from "$lib/Input.svelte";
+  import TaxonEditor from "$lib/TaxonEditor.svelte";
   import {normalFruits, tropicalFruits, passionFruit, gps} from '$lib/store';
 
+  //TODO daily list
+  //TODO daily list contextmenu https://svelte.dev/playground/6fb90919e24942b2b47d9ad154386b0c?version=3.49.0
+  //TODO daily list filter
+
   let showSideBar = $state(false);
-  let showinputModal = $state(false);
-  let showcursor = $state(false);
+  let showInput = $state(false);
+  let showTaxonEditor = $state(false);
+  let showCursor = $state(false);
 
   const toggleSideBar = ()=>{
     showSideBar = !showSideBar;
   }
 
   const toggleInput = ()=> {
-    showinputModal = !showinputModal;
+    showInput = !showInput;
+  }
+
+  const toggleTaxonEditor = ()=> {
+    showTaxonEditor = !showTaxonEditor;
   }
 
   const toggleCursor = ()=> {
-    showcursor = !showcursor;
+    showCursor = !showCursor;
   }
 
   const cursorClick = (e) =>{
     addNewData(e);
-    showcursor = false;
+    showCursor = false;
   }
 
   const addNewData = (c)=> {
@@ -51,11 +61,22 @@
 
 <div class="h-full">
 
-  <Input bind:showInput = {showinputModal} />
+  <Input
+    bind:showInput
+    backdropClasses = "items-start justify-center z-3000"
+    modalClasses = "w-auto h-auto mt-2"
+    idClass = 'inputX' 
+  />
   
-  <Sidebar bind:showSideBar = {showSideBar} />
+  <Sidebar bind:showSideBar />
+  
+  <TaxonEditor bind:showTaxonEditor />
   
   <Leaflet>
+
+    {#if showCursor}
+      <Cursor onclick = {cursorClick} />
+    {/if}
 
     <Layers>      
       <TileLayer
@@ -110,24 +131,27 @@
       >Sidebar</button>
     </Control>    
 
-    <Control position={'topleft'}>
+    <Control position={'bottomleft'}>
       <button 
         class="flex justify-center px-2 py-1 font-bold bg-yellow-500 border-2 border-black rounded-md" 
         onclick={toggleInput}
       >Input</button>
     </Control>
 
-    <Control position={'bottomleft'}>
+    <Control position={'topleft'}>
       <button 
-        class="flex justify-center px-2 py-1 mb-24 font-bold text-white border-2 border-black rounded-md bg-amber-600" 
+        class="flex justify-center px-2 py-1 font-bold bg-yellow-500 border-2 border-black rounded-md" 
+        onclick={toggleTaxonEditor}
+      >Taxon editor</button>
+    </Control>
+
+    <Control position={'topleft'}>
+      <button 
+        class="flex justify-center px-2 py-1 mt-8 font-bold text-white border-2 border-black rounded-md bg-amber-500" 
         onclick={toggleCursor}
       >Cursor</button>
     </Control>
 
-
-    {#if showcursor}
-      <Cursor onclick = {cursorClick} />
-    {/if}
 
     <!--CircleMarker position ={[47.391857,19.03652]}>
       <Popup>

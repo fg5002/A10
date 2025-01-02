@@ -4,6 +4,9 @@
   import { onMount, setContext } from 'svelte';
   import {mapState} from '$lib/store';
 
+  //TODO restore tilelayer
+   //TODO Leaflet contextmenu https://github.com/aratcliffe/Leaflet.contextmenu/tree/master
+
 	let {children} = $props();
 
 	let mapContainer = $state();

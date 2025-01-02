@@ -22,7 +22,7 @@
       //content: content
     });
 
-      layer() && layer().bindPopup(popup)
+    layer() && layer().bindPopup(popup)
       .on('popupopen', ()=> {open = true})
       .on('popupclose', ()=> {open = false});
     
