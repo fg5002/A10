@@ -3,13 +3,11 @@
 
   let {
     showModal = $bindable(),
-    //inFly = {x: -500, duration: 500},
-    //outFly = {x: -500, duration: 500},
-    inFly = {fade, duration: 500},
-    outFly = {fade, duration: 500},
     backdropClasses,
     modalClasses,
     idClass,
+    inFly = { y: 300, duration: 500 },
+    onClose,
     children
   } = $props();
 
@@ -19,7 +17,7 @@
     }
   }
 
-  //TODO customise inFly, outFly
+  $effect(()=> showModal && onClose);
   
 </script>
 
@@ -27,12 +25,14 @@
   <!-- svelte-ignore a11y_no_static_element_interactions -->
   <!-- svelte-ignore a11y_click_events_have_key_events -->
   <div
-    class="fixed flex w-full h-full items-start justify-center bg-transparent rounded-sm z-2000 {backdropClasses} {idClass}"
-    in:fly={inFly}
-    out:fly= {outFly}
-    onclick= {(e)=> closeModal(e)}
+    class="fixed flex flex-col h-full w-full md:w-1/2 md:mx-auto xl:w-2/3 z-2000 bg-slate-100/70 {backdropClasses} {idClass}"
+    in:fade
+    out:fade
+    onclick = {closeModal}
   >
-    <div class="flex border-2 border-slate-400 rounded-md shadow-2xl {modalClasses} {idClass}">
+    <div 
+      class="flex flex-col max-w-full max-h-full shadow-2xl bg-tr xl:text-sm md:text-lg sm:text-xl xl:w-2/3 {modalClasses} {idClass}"
+    >
       {@render children?.()}
     </div>
   </div>

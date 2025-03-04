@@ -1,3 +1,5 @@
+import plugin from "tailwindcss/plugin";
+
 /** @type {import('tailwindcss').Config} */
 export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
@@ -20,6 +22,9 @@ export default {
       // => @media (min-width: 1536px) { ... }
     },
 		extend: {
+      spacing: {
+        'keyboard-safe': 'calc(env(keyboard-inset-height, 0px) + 48px)'
+      },
 			zIndex: {
         '100': '100',
         '1000': '1000',
@@ -41,5 +46,13 @@ export default {
 		}
 	},
 
-	plugins: []
+	plugins: [
+    plugin(({ addUtilities }) => {
+      addUtilities({
+        ".field-sizing-content": {
+          "field-sizing": "content",
+        },
+      });
+    }),
+  ]
 };

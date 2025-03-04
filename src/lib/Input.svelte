@@ -6,38 +6,66 @@
 		backdropClasses,
 		modalClasses,
 		idClass,
-		type = 'tel'		
+		value,
+		onClose,
+		onSubmit,
 	} = $props();
 
-	let element;
+	let text = 'Valid for the file input type only, the accept attribute defines which file types are selectable in a file upload control.\n\nSee the file input type.'
 
-	$effect(()=> showInput && element.focus());
+	let textValue = $state();
 
+	let inputElement = $state();
+
+	$effect(()=> {
+		if(value) textValue = value;
+	});
+	$effect(()=> showInput && inputElement.focus());
+	
+	const keyDown = (e)=> {
+		if(e.key === 'Enter') {
+			submit();
+		}
+	}
+
+	const submit = ()=> {
+		onSubmit(textValue);
+		textValue = "";
+		showInput = false;
+	}
+	
 </script>
 
 <Modal
 	bind:showModal = {showInput}
-	backdropClasses = "bg-slate-400 bg-opacity-70"
-	modalClasses = "flex flex-col w-full max-h-1/3 items-start justify-start gap-2 mx-4 mt-16 border-2 border-slate-400"
+	backdropClasses = "flex items-end bg-white/30 justify-center"
+	modalClasses = "flex flex-col w-full gap-1 max-h-2/5 items-start bg-lime-300 justify-center border-2 border-slate-400 shadow-xl 
+	sm:mb-[calc(221px+48px)] p-2"
+	inFly = {{y: 500, duration: 300}}
+  outFly = {{y: 500, duration: 300}}
 	idClass = 'inputX'
+	{onClose}
 >
-
-	<div class="relative flex flex-col w-full h-full">
-
-		<!--input
-			class="w-full p-2 text-xl bg-yellow-300 outline-none border-slate-400 placeholder-slate-500"
-			type={type}
-			bind:this={element}
-			placeholder = '< Alma >'
-		-->
-
+	<label class="text-xl font-bold" for="ii">{item.nam}</label>
+	{#if item.edi === "text" || item.edi === "tel"} 
+		<input
+			class="w-full p-2 text-xl bg-yellow-300 border-2 rounded-md outline-none border-slate-400"
+			type={item.edi}
+			bind:this={inputElement}
+			bind:value={textValue}
+			onkeydown = {keyDown}
+		>
+	{:else if item.edi === "note"}
 		<textarea
-			class="w-full h-full p-2 text-xl bg-yellow-300 outline-none placeholder-slate-500"
+			class="w-full p-2 text-xl bg-yellow-300 border-2 rounded-md outline-none textarea border-slate-400"
 			rows="8"
-			type={type}
-			bind:this={element}
-			placeholder = '< Alma >'
-		></textarea>
-		<button class="absolute px-2 py-1 font-bold bg-orange-500 border-2 rounded-full opacity-45 right-2 bottom-2 border-slate-400">Ok</button>
-	</div>
+			bind:this={inputElement}
+			bind:value={textValue}
+		>{text}</textarea>
+		<button
+			class="w-auto px-2 text-xl bg-yellow-300 border-2 rounded-md outline-none border-slate-400"
+			onclick = {submit}
+		>Submit</button>
+	{/if}
+
 </Modal>

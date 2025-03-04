@@ -1,11 +1,10 @@
 <script>
+  import { createEventDispatcher } from 'svelte';
   import ListSelect from "./ListSelect.svelte";
 
-  let {
-    showTaxonList = false,
-    source = [],
-    result = null
-  } = $props();
+  export let showTaxonList = false;
+  export let source = [];
+  export let result = null;
 
   const dispatch = createEventDispatcher();
 
@@ -37,6 +36,6 @@
   <div slot="item" class="px-2 pt-1 border-b border-slate-400" let:item on:pointerup|preventDefault={select(item)}>
     <span class="font-semibold">{item.hun}</span>
     <span class="italic">{item.ltn}</span>
-    <span class="self-center text-red-500">{item.abr && `[${item.abr}]`}</span>
+    <span class="text-red-500 self-center">{item.abr && `[${item.abr}]`}</span>
   </div>
 </ListSelect>

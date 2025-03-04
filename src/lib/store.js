@@ -1,7 +1,18 @@
+/*
+You are an expert programmer AI assistant.
+You will be provided the full source code for a codabase in your project knowledge.
+Always use the entire knowledge for every question.
+When generating code you should do it in Svelte 5 (with Runes and Snippets) with Tailwind CSS.
+This project is a web application.
+Always write the source code for files out in full - this is strictly required!
+*/
+
 import {writable} from 'svelte/store';
 
+export const virtualKeyboardHeight = writable(0);
+
 export const currDate = writable(new Date().toISOString().split('T')[0]);
-export const currTime = writable(new Date().toTimeString().slice(0, 8).replace(/:/g,'_'));
+export const currTime = writable(new Date().toTimeString().slice(0, 5).replace(/:/g,'.'));
 
 export const mapState = writable({
   center: [47.391857,19.03352], 
@@ -9,23 +20,6 @@ export const mapState = writable({
   baselayer: 'OSM',
   overlays: ['Normalfruits']
 });
-
-export const currData3 = writable(
-  [
-    {typ: 1, id: 552, hun: 'Holló', ltn: 'Corvus corax', value: null},
-    {typ: 2, ord: 2, id: 6, nam: 'hím', rep: '*h', value: 1},
-    {typ: 2, ord: 3, id: 14, nam: 'nőstény', rep: '*n', value: 4},
-    {typ: 2, ord: 5, id: 19, nam: 'átrepülő', rep: null, value: null},
-    {typ: 2, ord: 40, id: 3, nam: 'rögzítve', rep: 'rögzítve: *', value: 16.15},
-    {typ: 2, ord: 45, id: 45, nam: 'dátum', rep: '*', value: '2024-12-11'},
-    {typ: 3, id: 4566, value: '20240612-102.jpg'},
-    {typ: 3, id: 4567, value: '20240612-103.jpg'},
-    {typ: 3, id: 125, value: '20240612-001.mp3'},
-    {typ: 5, id: 12, value: 'Kiss Péter'},
-    {typ: 5, id: 5, value: 'Nagy Pál'},
-    {typ: 6, id: 'ykiefdu1', value: 'Point'},
-  ]
-)
 
 export const main = {
   's': 4, 
@@ -89,56 +83,57 @@ export const sortableItems = writable([
   {id:22, nam:"Cras ornare tristique elit."}
 ])
 
-export const attributes = [
-  {abr: "c,lb", id: 1, nam: "címke", rep: "*", typ: "text"}, 
-  {abr: "ad", id: 2, nam: "adult", rep: "*ad", typ: "tel"}, 
-  {abr: "bef", id: 3, nam: "befejezés", rep: "*-ig", typ: "time"}, 
-  {abr: "bir", id: 4, nam: "birding.hu", rep: "birding.hu/*", typ: "tel"}, 
-  {abr: "ir", id: 5, nam: "irány", rep: "*-felé", typ: "text"}, 
-  {abr: "h", id: 6, nam: "hím", rep: "*h", typ: "tel"}, 
-  {abr: "hdb", id: 7, nam: "herbárium doboz", rep: "doboz :*", typ: "tel"}, 
-  {abr: "hno", id: 8, nam: "herbárium szám", rep: "no: *", typ: "tel"}, 
-  {abr: "idp", id: 9, nam: "időpont", rep: "*-kor", typ: "time"}, 
-  {abr: "imm", id: 10, nam: "immature", rep: "*imm", typ: "tel"}, 
-  {abr: "ize", id: 11, nam: "izeltlabuak.hu", rep: "izeltlabuak.hu/*", typ: "tel"}, 
-  {abr: "kez", id: 13, nam: "kezdés", rep: "*-tól", typ: "time"}, 
-  {abr: "n,fm", id: 14, nam: "nőstény", rep: "*n", typ: "tel"}, 
-  {abr: "p,e", id: 15, nam: "példány", rep: "*pd", typ: "tel"}, 
-  {abr: "pul", id: 16, nam: "pullus", rep: "*pull", typ: "tel"}, 
-  {abr: "sub", id: 17, nam: "subadult", rep: "*sub", typ: "tel"}, 
-  {abr: "toj", id: 18, nam: "tojás", rep: "* tojás", typ: "tel"}, 
-  {abr: "at", id: 19, nam: "átrepülő", rep: null, typ: null}, 
-  {abr: "dog", id: 20, nam: "dög", rep: null, typ: null}, 
-  {abr: "en", id: 21, nam: "ének", rep: null, typ: null}, 
-  {abr: "elf", id: 22, nam: "előfordul", rep: null, typ: null}, 
-  {abr: "ell", id: 23, nam: "ellenőrizendő", rep: null, typ: null}, 
-  {abr: "ft", id: 24, nam: "fotó", rep: null, typ: null}, 
-  {abr: "fh", id: 25, nam: "fotóról határozva", rep: null, typ: null}, 
-  {abr: "flt", id: 26, nam: "folt", rep: null, typ: null}, 
-  {abr: "fsz", id: 27, nam: "fészek", rep: null, typ: null}, 
-  {abr: "gyk", id: 28, nam: "gyakori", rep: null, typ: null}, 
-  {abr: "hg", id: 29, nam: "hang", rep: null, typ: null}, 
-  {abr: "kcs", id: 30, nam: "közös csapatban", rep: null, typ: null}, 
-  {abr: "ket", id: 31, nam: "kétes", rep: null, typ: null}, 
-  {abr: "lis, lvi", id: 32, nam: "látva is", rep: null, typ: null}, 
-  {abr: "mdf", id: 33, nam: "mindenfelé", rep: null, typ: null}, 
-  {abr: "nh,npd", id: 34, nam: "néhány pd", rep: null, typ: null}, 
-  {abr: "nym", id: 35, nam: "nyom", rep: null, typ: null}, 
-  {abr: "ria", id: 36, nam: "riaszt", rep: null, typ: null}, 
-  {abr: "rtk", id: 37, nam: "ritka", rep: null, typ: null}, 
-  {abr: "szv", id: 38, nam: "szórványos", rep: null, typ: null}, 
-  {abr: "tbb,tpd", id: 39, nam: "több pd", rep: null, typ: null}, 
-  {abr: "tbf", id: 40, nam: "többfelé", rep: null, typ: null}, 
-  {abr: "tcs", id: 41, nam: "több csapatban", rep: null, typ: null}, 
-  {abr: "tom", id: 42, nam: "tömeges", rep: null, typ: null}, 
-  {abr: "vir", id: 43, nam: "virágzik", rep: null, typ: null}, 
-  {abr: "ab", id: 44, nam: "abundancia", rep: "*", typ: ['ritka', 'szórványos', 'gyakori', 'tömeges']}, 
-  {abr: "dt", id: 45, nam: "dátum", rep: "dátum: *", typ: "date"}, 
-  {abr: "nt", id: 46, nam: "note", rep: "*", typ: "note"}, 
-  {abr: "gy", id: 47, nam: "gyakoriság", rep: "*", typ: ['ritka', 'igen szórványos', 'szórványos', 'gyakori', 'tömeges']}, 
-  {abr: "ad", id: 48, nam: "A-D", rep: "A-D: *", typ: ['+', '+-1', '1', '1-2', '2', '2-3', '3', '3-4', '4', '4-5', '5']},
-  {abr: "j", id: 49, nam: "juvenilis", rep: "*juv", typ: "tel"}, 
-]
+
+export const currData2 = writable({
+  id: null,
+  geo:  {id: null, nam: 'Point', cor: [47.500000,19.250000], keep: true},
+  data: [
+    //{no: 1, id: 552, hun: 'Holló', ltn: 'Corvus corax', keep: false},
+    //{no: 2, id: 3, ord: 3, nam: "hím", abr: "h", rep: "*h", typ: "tel", value: 1, keep: false},
+    //{no: 2, id: 4, ord: 4, nam: "nőstény", abr: "n", rep: "*n", typ: "tel", value: 4, keep: false},
+    //{no: 2, id: 15, ord: 15, nam: "átrepülő", abr: "at", rep: "null", typ: null, value: null, keep: false},
+    //{no: 2, id: 40, ord: 40, nam: "rögzítve", abr: "rg", rep: "*", typ: "time", value: '16.15', keep: false},
+    //{no: 2, id: 39, ord: 39, nam: "dátum", abr: "dt", rep: "*", typ: "date", value: '2024-12-11', keep: false},
+    {no: 3, id: 5555525, nam: '20240612-102.jpg', keep: false},
+    //{no: 3, id: 5555526, nam: '20240612-103.jpg', keep: false},
+    //{no: 3, id: 125, nam: '20240612-001.mp3', keep: false},
+    {no: 5, id: 3, nam: 'Bodor István', keep: true},
+    //{no: 5, id: 12, nam: 'Őze Péter', keep: true},
+  ]
+})
+
+export const currData = writable({
+  id: null,
+  tax: [{id: 552, hun: 'Holló', ltn: 'Corvus corax', keep: false}],
+  atr: [
+      {id: 3, ord: 3, nam: "hím", abr: "h", rep: "*h", typ: "tel", value: 1, keep: false},
+      //{id: 4, ord: 4, nam: "nőstény", abr: "n", rep: "*n", typ: "tel", value: 4, keep: false},
+      {id: 15, ord: 15, nam: "átrepülő", abr: "at", rep: "null", typ: null, value: null, keep: false},
+      {id: 24, ord: 24, nam: "gyakoriság", abr: "gy", rep: "*", typ: "lis", dat: "igen ritka, ritka, szórványos, gyakori, tömeges", value: "gyakori", keep: false},
+      {id: 39, ord: 39, nam: "dátum", abr: "dt", rep: "*", typ: "date", value: '2024-12-11', keep: false},
+      {id: 40, ord: 40, nam: "rögzítve", abr: "rg", rep: "*", typ: "time", value: '16.15', keep: false},
+      {id: 44, ord: 44, nam: "note", abr: "nt", rep: "*", typ: "note", value: 'Valami mindig történik.', keep: false}
+  ],
+  fil: [
+    {id: 5555525, nam: '20240612-102.jpg', keep: false},
+    //{id: 5555526, nam: '20240612-103.jpg', keep: false},
+    //{id: 125, nam: '20240612-001.mp3', keep: false},
+  ],
+  obs: [
+    {id: 3, nam: 'Bodor István', keep: true},
+    //{id: 12, nam: 'Őze Péter', keep: true},
+  ],
+  geo: [{id: null, nam: 'Point', cor: [47.500000,19.250000], keep: true}]
+})
+
+export const DB1 = writable({
+  tax: 552,
+  atr: {key: [3,4,15,39,40], value: [1,4,null,'2024-12-11','16.15']},
+  fil: ['20240612-102.jpg','20240612-103.jpg','20240612-001.mp3'],
+  obs: [3,12],
+  geo: {typ: 'Point', cor: [47.500000,19.250000]},
+  id: null,
+})
 
 export const normalFruits = writable({
   'type': 'FeatureCollection',
