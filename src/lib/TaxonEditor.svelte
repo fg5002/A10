@@ -3,10 +3,14 @@
   import {attributes, observers} from "$lib/attributes.js"
   import {birds} from "$lib/taxon";
   import SveltyPicker, {config} from 'svelty-picker';
-  import {currData, currDate, normalFruits} from "$lib/store";
+  import {currData, storedData, currDate, dailyData} from "$lib/store";
+
+  //TODO update data
+  //TODO hide dummy data
 	
   let {
 		showTaxonEditor = $bindable(),
+    onUpdateGeo
 	} = $props();
 
 	let element = $state();
@@ -116,10 +120,17 @@
     }
   }
 
+  const addRecordingTime = ()=> {
+    let item = attributes.filter(f=> f.nam === "rögzítve")[0];
+    item.keep = false;
+    item.value = new Date().toTimeString().substring(0, 5);
+    addNewCurrDataItem('atr', item);
+  }
+
   const addNewCurrDataItem = (key, item)=> {
     deleteCurrDataItem(key, item);
-    $currData[key] = key === 'tax' ? [item] : [...$currData[key], item];
-    key === 'tax' || $currData[key].sort((a,b)=> a.ord - b.ord || a.nam.localeCompare(b.nam, 'hu'));
+    $currData[key] =  [...$currData[key], item];
+    $currData[key].length > 0 && $currData[key].sort((a,b)=> a.ord - b.ord || a.nam.localeCompare(b.nam, 'hu'));
     searchText = "";
     clearMainInput();
     element.focus();
@@ -138,7 +149,7 @@
       searchText.match(/[^\.]+\.[\D]{3,4}/) ? searchText : null;
     if(fn) {
       $currData.fil = $currData.fil.filter(f => f.nam != fn);
-      let obj = {id: Math.floor(Math.random() * 100000000), nam: fn}
+      let obj = {id: Math.floor(Math.random() * 100000000), nam: fn, keep: false}
       addNewCurrDataItem('fil', obj);
     }
   }
@@ -206,10 +217,12 @@
           selectedAttribute.value : 
           selectedAttribute.typ === 'time' ? 
             new Date().toTimeString().substring(0, 5) : 
-            new Date().toISOString().split('T')[0];
+            $currDate;
+            element.focus();
         break;
       case "lis":
         element.disabled = true;
+        element.focus();
         break;
       default:
         break;
@@ -232,34 +245,101 @@
   }
 
   const submitTaxonEditor = ()=> {
-    $currData.id = Math.floor(Math.random() * 100000000);
-    let disp = {
-      tax: $currData['tax'][0],
-      atr: $currData['atr'].map(f=> f.typ ? f.rep.replace('*', f.value) : f.nam).join(', '),
-      fil: $currData['fil'].map(f=> f.nam).join(', '),
-      obs: $currData['obs'].map(f=> f.nam).join(', '),
-      dat: $currDate
+    
+    $currData.aid = [{id: Math.floor(Math.random() * 100000000), keep: false}];
+
+    if($currData.atr.filter(f=> f.nam === 'rögzítve').length === 0){
+      addRecordingTime();
     }
-    //createGeoJsonItem(disp)
-    //showTaxonEditor = false;
+  
+    let disp = currDataToFeature($currData);
+    console.log('disp', JSON.stringify(disp));
+    $dailyData.features = [...$dailyData.features, disp];
+  
+    let data = currDataToStoredData($currData)
+    console.log('data', JSON.stringify(data))
+    $storedData = [...$storedData, data];
+
+    showTaxonEditor = false;
     editorType = 'Tax';
-    Object.keys($currData).forEach(key => {
-      $currData[key] = key != 'id' && $currData[key].filter(f=> f.keep);
-    });
+    currDataClean();
+
   }
 
-  const createGeoJsonItem = (data)=> {
-    let f = {
+  // ord, id, dat, tax, atk, atv, fil, obs, typ, cor
+
+  const currDataFromStoredData = (id)=> {
+    let reData = $storedData.filter(f=> f[1] === id)[0];
+    let reloadedData = {};
+    reloadedData.tax = reData[3] ? birds.filter(f=> f.id === reData[3]) : [];
+    reloadedData.atr = reData[4] ? reData[4].map((z,i)=> {
+      let h =attributes.filter(f=> f.id === z)[0]
+      h.value = reData[5][i];
+      h.keep = false;
+      return h;
+    }) : []
+    reloadedData.fil = reData[6] ? reData[6].map(f=> {
+      return {nam: f, keep: false};
+    }): [];
+    reloadedData.obs = reData[7] ? reData[7].map(f=> {
+      let o = observers.filter(h=> h.id === f)[0];
+      o.keep = true;
+      return o;
+    }) : [];
+    reloadedData.geo = reData[8] ? [{id: null, type: reData[8] === 1 ? 'Point' : 'Polygon', cor: reData[9], keep: true}] : [];
+    reloadedData.aid = id ? [{id: id, keep: true}] : [];
+    return reloadedData;
+  }
+
+  const currDataToFeature = (data)=> {
+    let displayedData = {};
+    displayedData.tax = data.tax.length > 0 ? {'hun': data.tax[0].hun, 'ltn': data.tax[0].ltn} : null;
+    displayedData.atr = data.atr.length > 0 ? data.atr.map(f=> f.typ ? f.rep.replace('*', f.value) : f.nam).join(', ') : null;
+    displayedData.fil = data.fil.length > 0 ? data.fil.map(f=> f.nam).join(', ') : null;
+    displayedData.obs = data.obs.length > 0 ? data.obs.map(f=> f.nam).join(', ') : null;
+
+    let feature = {
       'type': 'Feature',
       'properties': {
-        data: data,
+        disp: displayedData,
+        id: data['aid'][0].id
       },
       'geometry': {
-        'type': $currData.geo.nam,
-        'coordinates': $currData.geo.cor,
+        'type': data.geo[0].type,
+        'coordinates': data.geo[0].cor,
       }
     }
-    $normalFruits.features = [...$normalFruits.features, f];
+    return feature
+  }
+
+  const currDataToStoredData = (data)=> {
+    let storingData = [
+      $storedData.length+1,
+      data.aid.length > 0 ? data['aid'][0].id : null,
+      parseInt($currDate.replace(/-/g,'')),
+      data.tax.length > 0 ? data.tax[0].id : null,
+      data.atr.length > 0 ? data.atr.map(f=> f.id) : null,
+      data.atr.length > 0 ? data.atr.map(f=> f.typ ? f.value : null) : null,
+      //data.fil.length > 0 ? data.fil.map(f=> f.id ? f.id : f.nam) : null,
+      data.fil.length > 0 ? data.fil.map(f=> f.nam) : null,
+      data.obs.length > 0 ? data.obs.map(f=> f.id) : null,
+      //data.geo[0].id ? data.geo[0].id : data.geo[0].type,
+      //data.geo[0].id ? data.geo[0].id : data.geo[0].cor,
+      data.geo[0].type === 'Polygon' ? 2 : 1,
+      data.geo[0].cor,
+    ]
+    return storingData;
+  }
+
+  const storedDataToFeatureCollection = ()=> {
+    let rd = $storedData.map(f=> {
+      return currDataToFeature(currDataFromStoredData(f[1]))
+    })
+    let geo = {
+      'type': 'FeatureCollection',
+      'features': rd
+    }
+    return geo;
   }
 
   const clearMainInput = ()=> {
@@ -270,6 +350,27 @@
     element.type = 'text';
     element.disabled = false;
     element.focus();
+  }
+
+  const currDataClean = ()=> {
+    Object.keys($currData).forEach(key => {
+      $currData[key] = key != 'aid' && $currData[key].filter(f=> f.keep);
+    });
+  }
+
+  const currDataClearAll = ()=> {
+    Object.keys($currData).forEach(key=> $currData[key] = [])
+  }
+  
+  const selectedAttributeClick = (key, item)=> {
+    key === 'geo' ? updateGeo($currData.geo[0]) :
+    item.typ ? editAttribute(item) : deleteCurrDataItem(key, item);
+  }
+
+  const updateGeo = (item)=> {
+    if(item.keep) return;
+    onUpdateGeo?.(item.id);
+    showTaxonEditor = false;
   }
 
 </script>
@@ -308,6 +409,20 @@
       alt="none"
       onclick = {()=> showTaxonEditor = false}
     >
+    <!-- svelte-ignore a11y_click_events_have_key_events -->
+    <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+    <img 
+      class="w-5 h-5" src="images/close-small-svgrepo-com.svg"
+      alt="none"
+      onclick = {()=> $currData = currDataFromStoredData(55137035)}
+    >
+    <!-- svelte-ignore a11y_click_events_have_key_events -->
+    <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+    <img 
+      class="w-5 h-5" src="images/vector-triangle.svg"
+      alt="none"
+      onclick = {()=> $dailyData = storedDataToFeatureCollection()}
+    >
   </div>
 
   <!-------------------------------------------------------------------------------------------------->
@@ -338,6 +453,7 @@
         {#if selectedAttribute}
               
           {#if selectedAttribute.typ === 'note'}
+          
             <textarea
               class=" w-full p-2 bg-yellow-300 outline-none resize-none border-[1px] border-slate-400 rounded-b-sm"
               rows="8"
@@ -347,6 +463,7 @@
             ></textarea>
 
           {:else if selectedAttribute.typ === 'date' || selectedAttribute.typ === 'time'}
+
             <SveltyPicker
               mode = {selectedAttribute && selectedAttribute.typ === "time" ? "time" : "date"}
               format = {selectedAttribute && selectedAttribute.typ === "time" ? "hh.ii" : "yyyy-mm-dd"} 
@@ -358,6 +475,7 @@
             />
 
           {:else if selectedAttribute.typ === 'lis'}
+
             <ul class="max-h-80 w-fit divide-y-[1px] divide-slate-400 overflow-y-auto border-[1px] border-slate-400">
               {#each selectedAttribute.dat.split(', ') as value}
                 <!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -380,7 +498,7 @@
             <!-- svelte-ignore a11y_click_events_have_key_events -->
             <!-- svelte-ignore a11y_no_static_element_interactions -->
             {#each Object.keys($currData) as key}      
-              {#if key != 'id' && key != 'geo' && $currData[key].length > 0}
+              {#if $currData[key].length > 0}
                 <div class="flex flex-wrap gap-1">
                   {#each $currData[key] as item}
                     <div 
@@ -389,12 +507,16 @@
                         oncontextmenu = {(e)=> changeKeep(e, key, item)}
                     >
                       <div
-                        onclick = {()=> item.typ ? editAttribute(item) : deleteCurrDataItem(key, item)}
+                        onclick = {()=> selectedAttributeClick(key, item)}
                       >
                         {#if key === 'tax'}
                           {item.hun} ({item.ltn})
                         {:else if key === 'atr'}
                           {item.typ ? item.rep.replace('*', item.value) : item.nam}
+                        {:else if key === 'geo'}
+                          {item.type}: {item.id}
+                        {:else if key === 'aid'}
+                          Edited data id: {item.id}
                         {:else}
                           {item.nam}
                         {/if}
@@ -414,14 +536,20 @@
                 </div>
               {/if}
             {/each}
-            {#if $currData.atr.length > 0 && $currData.obs.length > 0 && searchText === ""}
-              <div>
+            <div>
+              {#if $currData.atr.length > 0 && $currData.obs.length > 0 && searchText === ""}
                 <button
-                  class="w-auto px-4 py-1 mt-4 text-xl text-white border-2 rounded-md outline-none bg-amber-600 border-slate-400"
+                  class="w-auto px-4 py-1 mt-4 text-xl text-white border-[1px] rounded-md outline-none border-slate-800 
+                  shadow-xl {$currData.aid.length > 0 ? 'bg-violet-400' : 'bg-amber-600'}"
                   onclick = {submitTaxonEditor}
-                >Submit</button>
-              </div>
-            {/if}  
+                >{$currData.aid.length > 0 ? 'Update' : 'Submit'}</button>
+              {/if}
+              <button
+                class="w-auto px-4 py-1 mt-4 text-xl text-white border-[1px] rounded-md outline-none border-slate-800 
+                shadow-xl bg-amber-600}"
+                onclick = {currDataClearAll}
+              >Clear editor</button>  
+            </div>
           </div>
 
         {/if}

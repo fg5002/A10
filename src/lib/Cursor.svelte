@@ -37,6 +37,7 @@
   }
 
   // TODO snapped props?
+
   const snapTo=(d, p)=>{
     let dist = distance(d, p, {units: 'kilometers'});
     dist < pixelToMeter(15) && cursor.setLatLng(revArrToLatLng(d.geometry.coordinates));
@@ -44,6 +45,7 @@
 
   // TODO multipolygon?
   // TODO filter args
+  
   const cursorSnap=(e, ...args)=> {
     let p=turf.point(e);
     [...args].forEach(f=> {

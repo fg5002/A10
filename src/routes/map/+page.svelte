@@ -11,11 +11,9 @@
   import Input from "$lib/Input.svelte";
   import TaxonEditor from "$lib/TaxonEditor.svelte";
   import DailyList from "$lib/DailyList.svelte";
-  //import List from "$lib/List.svelte";
-  import {normalFruits, tropicalFruits, passionFruit, gps, currData} from '$lib/store';
+  import {dailyData, currData, normalFruits,tropicalFruits, passionFruit, gps} from '$lib/store';
 
   //TODO daily list
-  //TODO daily list contextmenu https://svelte.dev/playground/6fb90919e24942b2b47d9ad154386b0c?version=3.49.0
   //TODO daily list filter
 
   let showSideBar = $state(false);
@@ -41,7 +39,7 @@
   }
 
   const cursorClick = (e) =>{
-    $currData.geo = {id: null, nam: 'Point', cor: e, keep: true}
+    $currData.geo = [{id: null, type: 'Point', cor: e, keep: true}]
     //addNewPoint(e);
     console.log($currData.geo)
     showTaxonEditor = true;
@@ -86,6 +84,7 @@
 
 <DailyList 
   bind:showDailyList
+  dataList = {$dailyData}
   on:editDailyItem = {editDailyItem}
 />
 
@@ -131,6 +130,10 @@
 
     <Deflate>
     
+      <SubGroup name='Daily data'>
+        <GeoJson name="Daily data" data={$dailyData}/>
+      </SubGroup>
+
       <SubGroup name='Normalfruits'>
         <GeoJson name="NormalFruits" data={$normalFruits}/>
       </SubGroup>
@@ -179,16 +182,6 @@
       onclick={toggleCursor}
     >Cursor</button>
   </Control>
-
-
-  <!--CircleMarker position ={[47.391857,19.03652]}>
-    <Popup>
-      <div class="flex flex-col justify-center w-64 gap-1 p-2 bg-yellow-200">
-        <div class="font-bold whitespace-nowrap">Nagy fülemüle</div>
-        <div class="italic whitespace-nowrap">Luscinia luscinia</div>
-      </div>
-    </Popup>   
-  </CircleMarker-->
 
 </Leaflet>
 

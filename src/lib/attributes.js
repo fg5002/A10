@@ -39,11 +39,11 @@ export const attributes = [
   {id: 37, ord: 37, nam: "kétes", abr: "ket", rep: null, typ: null},
   {id: 38, ord: 38, nam: "ellenőrizendő", abr: "ell", rep: null, typ: null},
   {id: 39, ord: 39, nam: "dátum", abr: "dt", rep: "d: *", typ: "date"},
-  {id: 40, ord: 40, nam: "rögzítve", abr: "rg", rep: ": *", typ: "time"},
-  {id: 41, ord: 41, nam: "időpont", abr: "idp", rep: "*-kor", typ: "time"},
-  {id: 42, ord: 42, nam: "kezdés", abr: "kez", rep: "* ->", typ: "time"},
-  {id: 43, ord: 43, nam: "befejezés", abr: "bef", rep: "-> *", typ: "time"},
-  {id: 44, ord: 44, nam: "note", abr: "nt", rep: "*", typ: "note"}
+  {id: 40, ord: 40, nam: "időpont", abr: "idp", rep: "*-kor", typ: "time"},
+  {id: 41, ord: 41, nam: "kezdés", abr: "kez", rep: "*-", typ: "time"},
+  {id: 42, ord: 42, nam: "befejezés", abr: "bef", rep: "-*", typ: "time"},
+  {id: 43, ord: 43, nam: "note", abr: "nt", rep: "*", typ: "note"},
+  {id: 44, ord: 44, nam: "rögzítve", abr: "rg", rep: "*", typ: "time"},
 ]
 
 export const observers = [
@@ -68,4 +68,5 @@ export const observers = [
   {id: 19, nam: "Fábiánné Zsuzsa	"}, 
   {id: 20, nam: "Eredics Bálint"},
   {id: 21, nam: "Hany Istók"},
+  {id: 22, nam: "Ócsag Attila"},
 ]

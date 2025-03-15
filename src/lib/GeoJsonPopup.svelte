@@ -1,18 +1,20 @@
 <script>
-	import { isObject } from "@turf/helpers";
-
-  let { data } = $props();
+  let { disp } = $props();
 </script>
 
-<div class="max-w-[200px] p-2 bg-yellow-200 text-black rounded sm: text-[1.1rem]">
-  {#each data as item}
-    {#if typeof item === 'object'}
+<div class="max-w-1/2 p-2 bg-yellow-200 text-black rounded sm: text-[1.1rem]">
+  <!--span class="font-semibold">{disp.ord}</span-->
+  {#if typeof disp === 'object'}
+    {#if disp.tax}
       <div>
-        <div class="font-bold">{item.hun}</div>
-        <div class="italic ">{item.ltn}</div>        
+        <div class="font-bold">{disp.tax.hun}</div>
+        <div class="italic ">{disp.tax.ltn}</div>        
       </div>
-    {:else}
-      <div>{item}</div>
     {/if}
-  {/each}
+    {#if disp.atr}
+      <div>{disp.atr}</div>
+    {/if}
+  {:else}
+    <div>{disp}</div>
+  {/if}
 </div>

@@ -5,7 +5,7 @@
   import {mapState} from '$lib/store';
 
   //TODO restore tilelayer
-   //TODO Leaflet contextmenu https://github.com/aratcliffe/Leaflet.contextmenu/tree/master
+  //TODO Leaflet contextmenu https://github.com/aratcliffe/Leaflet.contextmenu/tree/master
 
 	let {children} = $props();
 
@@ -30,16 +30,16 @@
     })
     .on('baselayerchange', (e)=> {
       $mapState.baselayer= e.name;
-      console.log($mapState.baselayer);
+      //console.log($mapState.baselayer);
     })
     .on('overlayadd', (e)=> {
       if($mapState.overlays.includes(e.name)) return;
       $mapState.overlays = [...$mapState.overlays, e.name];
-      console.log('added', $mapState.overlays);
+      //console.log('added', $mapState.overlays);
     })
     .on('overlayremove', (e)=> {
       $mapState.overlays = $mapState.overlays.filter(d=> d!=e.name);
-      console.log('removed', $mapState.overlays);
+      //console.log('removed', $mapState.overlays);
     });
 
     return ()=> {

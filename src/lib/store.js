@@ -11,128 +11,80 @@ import {writable} from 'svelte/store';
 
 export const virtualKeyboardHeight = writable(0);
 
+export const currTime = writable(new Date().toTimeString().substring(0, 5)); 
 export const currDate = writable(new Date().toISOString().split('T')[0]);
-export const currTime = writable(new Date().toTimeString().slice(0, 5).replace(/:/g,'.'));
 
 export const mapState = writable({
   center: [47.391857,19.03352], 
   zoom: 16,
   baselayer: 'OSM',
-  overlays: ['Normalfruits']
+  overlays: ['Daily data', 'Passionfruit' ]
 });
 
-export const main = {
-  's': 4, 
-  'd': 155,
-  't': 289,
-  'k': [6,14,19],
-  'v': [1,4,null],
-  'f': [105,2841],
-  'o': [2,1,3],
-  'r': [46,24,3],
-  'g': 506
-}
-
-export const main_2 = [
-  {'d':2,'s':4,'t':289,'k':[6,14,19],'v':[1,4,''],'f':[1,2],'o':[2,1,3],'r':[46,24,3],'g':506},
-  {'d':2,'s':5,'t':151,'k':[2],'v':[1],'f':null,'o':[1],'r':null,'g':1788},
-  {'d':2,'s':6,'t':null,'k':[1],'v':['valami bogár'],'o':[2],'r':[5],'g':1492}
-]
-
-// date, sor, taxon, key, value, file, observer, reference, shape
-export const main_2a = [
-  {id:1,data:[1,2,289,[15,2,13,19,7],[6,2,"08.30","","A12"],[1,2],[2,1,3],506]},
-  {id:2,data:[2,2,151,[2],[1],null,[1],1788]},
-  {id:3,data:[3,2,null,[1],["valami bogár"],null,[2],1492]},
-  {id:4,data:[4,2,289,[6,14,19],[1,4,""],[1,2],[2,1,3],556]},
-  {id:5,data:[5,1,151,[2],[1],null,[1],1508]},
-  {id:6,data:[6,1,55,[1],["valami bogár"],null,[2],886]},
-  {id:7,data:[7,1,96,[15,29],[1,""],null,[2],102]},
-  {id:8,data:[8,1,289,[6,14,12,9],[1,4,9,"12.50"],[1,2],[2,1,3],999]}
-]
-
-export const main_3 = [
-  {"r":4,"d":2,"t":289,"k":[6,14,19],"v":[1,4,""],"f":[1,2],"o":[2,1,3],"g":506},
-  {"r":5,"d":2,"t":151,"k":[2],"v":[1],"n":"Hárfázott a felhőkön.","o":[1],"g":1788},
-  {"r":6,"d":2,"k":[1],"v":["valami bogár"],"o":[2],"g":1492}
-]
-
-
-export const sortableItems = writable([
-  {id:1, nam:"alma"}, 
-  {id:2, nam:"körte"}, 
-  {id:3, nam:"szilva"}, 
-  {id:4, nam:"kajszi"}, 
-  {id:5, nam:"balatoni rákok"}, 
-  {id:6, nam:"málna"},
-  {id:7, nam:"dió"},
-  {id:8, nam:"mogyoró"}, 
-  {id:9, nam:"berkenye"}, 
-  {id:10, nam:"meggy"}, 
-  {id:11, nam:"ribizke"}, 
-  {id:12, nam:"egres"}, 
-  {id:13, nam:"mandula"}, 
-  {id:14, nam:"cseresznye"},
-  {id:15, nam:"törökmogyoró"}, 
-  {id:16, nam:"Lorem ipsum dolor sit amet, consectetuer adipiscing elit."},
-  {id:17, nam:"Vestibulum commodo felis quis tortor."}, 
-  {id:18, nam:"Donec quis dui at dolor tempor interdum."}, 
-  {id:19, nam:"Nunc dignissim risus id metus."}, 
-  {id:20, nam:"Integer vitae libero ac risus egestas placerat."}, 
-  {id:21, nam:"Vivamus vestibulum ntulla nec ante."}, 
-  {id:22, nam:"Cras ornare tristique elit."}
-])
-
-
-export const currData2 = writable({
-  id: null,
-  geo:  {id: null, nam: 'Point', cor: [47.500000,19.250000], keep: true},
-  data: [
-    //{no: 1, id: 552, hun: 'Holló', ltn: 'Corvus corax', keep: false},
-    //{no: 2, id: 3, ord: 3, nam: "hím", abr: "h", rep: "*h", typ: "tel", value: 1, keep: false},
-    //{no: 2, id: 4, ord: 4, nam: "nőstény", abr: "n", rep: "*n", typ: "tel", value: 4, keep: false},
-    //{no: 2, id: 15, ord: 15, nam: "átrepülő", abr: "at", rep: "null", typ: null, value: null, keep: false},
-    //{no: 2, id: 40, ord: 40, nam: "rögzítve", abr: "rg", rep: "*", typ: "time", value: '16.15', keep: false},
-    //{no: 2, id: 39, ord: 39, nam: "dátum", abr: "dt", rep: "*", typ: "date", value: '2024-12-11', keep: false},
-    {no: 3, id: 5555525, nam: '20240612-102.jpg', keep: false},
-    //{no: 3, id: 5555526, nam: '20240612-103.jpg', keep: false},
-    //{no: 3, id: 125, nam: '20240612-001.mp3', keep: false},
-    {no: 5, id: 3, nam: 'Bodor István', keep: true},
-    //{no: 5, id: 12, nam: 'Őze Péter', keep: true},
-  ]
-})
-
 export const currData = writable({
-  id: null,
-  tax: [{id: 552, hun: 'Holló', ltn: 'Corvus corax', keep: false}],
+  tax: [
+    //{id: 552, hun: 'Holló', ltn: 'Corvus corax', keep: false}
+  ],
   atr: [
-      {id: 3, ord: 3, nam: "hím", abr: "h", rep: "*h", typ: "tel", value: 1, keep: false},
-      //{id: 4, ord: 4, nam: "nőstény", abr: "n", rep: "*n", typ: "tel", value: 4, keep: false},
-      {id: 15, ord: 15, nam: "átrepülő", abr: "at", rep: "null", typ: null, value: null, keep: false},
-      {id: 24, ord: 24, nam: "gyakoriság", abr: "gy", rep: "*", typ: "lis", dat: "igen ritka, ritka, szórványos, gyakori, tömeges", value: "gyakori", keep: false},
-      {id: 39, ord: 39, nam: "dátum", abr: "dt", rep: "*", typ: "date", value: '2024-12-11', keep: false},
-      {id: 40, ord: 40, nam: "rögzítve", abr: "rg", rep: "*", typ: "time", value: '16.15', keep: false},
-      {id: 44, ord: 44, nam: "note", abr: "nt", rep: "*", typ: "note", value: 'Valami mindig történik.', keep: false}
+    //{id: 3, ord: 3, nam: "hím", abr: "h", rep: "*h", typ: "tel", value: 1, keep: false},
+    //{id: 4, ord: 4, nam: "nőstény", abr: "n", rep: "*n", typ: "tel", value: 4, keep: false},
+    //{id: 15, ord: 15, nam: "átrepülő", abr: "at", rep: "null", typ: null, value: null, keep: false},
+    //{id: 24, ord: 24, nam: "gyakoriság", abr: "gy", rep: "*", typ: "lis", dat: "igen ritka, ritka, szórványos, gyakori, tömeges", value: "gyakori", keep: false},
+    //{id: 39, ord: 39, nam: "dátum", abr: "dt", rep: "*", typ: "date", value: '2024-12-11', keep: false},
+    //{id: 43, ord: 43, nam: "note", abr: "nt", rep: "*", typ: "note", value: 'Valami mindig történik.', keep: false},
+    //{id: 44, ord: 44, nam: "rögzítve", abr: "rg", rep: "*", typ: "time", value: '16.15', keep: false},
   ],
   fil: [
-    {id: 5555525, nam: '20240612-102.jpg', keep: false},
+    //{id: null, nam: '20240612-102.jpg', keep: false},
     //{id: 5555526, nam: '20240612-103.jpg', keep: false},
-    //{id: 125, nam: '20240612-001.mp3', keep: false},
+    //{id: 125855, nam: '20240612-001.mp3', keep: false},
   ],
   obs: [
     {id: 3, nam: 'Bodor István', keep: true},
     //{id: 12, nam: 'Őze Péter', keep: true},
   ],
-  geo: [{id: null, nam: 'Point', cor: [47.500000,19.250000], keep: true}]
+  geo: [
+    //{id: null, type: 'Point', cor: [47.500000,19.250000], keep: false}
+  ],
+  aid: [
+    //{id: 81456, keep: true}
+  ],
 })
 
-export const DB1 = writable({
-  tax: 552,
-  atr: {key: [3,4,15,39,40], value: [1,4,null,'2024-12-11','16.15']},
-  fil: ['20240612-102.jpg','20240612-103.jpg','20240612-001.mp3'],
-  obs: [3,12],
-  geo: {typ: 'Point', cor: [47.500000,19.250000]},
-  id: null,
+export const storedData = writable([
+  [1,47575752,20250313,null,[1],['Csajkavirág 1'],null,[22],2,[[[19.00452,47.372911],[19.004952,47.372837],[19.005068,47.37262],[19.004977,47.37238],[19.004642,47.37235],[19.004136,47.372527],[19.004111,47.372865],[19.00452,47.372911]]]],
+  [2,47575788,20250313,null,[1],['Csajkavirág 2'],null,[22],2,[[[19.005047,47.373532],[19.004935,47.373753],[19.005034,47.373929],[19.005374,47.373915],[19.005622,47.37379],[19.005801,47.373564],[19.005461,47.373396],[19.005047,47.373532]]]],
+  [3,47579991,20250313,null,[1],['Cseresznye'],null,[22],1,[19.032088,47.392698]],
+  [4,47576691,20250313,null,[1],['Alma'],null,[22],1,[19.030586,47.391792]],
+  [5,47599752,20250313,464,[2,44],[1,'18:38'],null,[22],1,[19.035145,47.395587]],
+  [6,55137035,20250313,528,[2,15,35,44],["4",null,null,"21:01"],null,[7,3],1,[19.033242,47.392443]],
+  [7,63225928,20250313,772,[3,11,44],["1",null,"21:14"],null,[3],1,[19.031216,47.390695]],
+  [8,45949360,20250313,72,[2,44],["8","21:17"],null,[22,3],1,[19.032247,47.394818]],
+  [9,63384736,20250313,551,[2,11,35,44],["2",null,null,"21:15"],null,[22,3],1,[19.035488,47.389446]],
+  [10,4285453,20250313,750,[3,11,35,44],["3",null,null,"21:19"],null,[22,3],1,[19.035488,47.389446]],
+  [11,90294413,20250313,156,[2,15,44],["3",null,"20:38"],null,[3],1,[19.036391,47.393286]],
+  [12,18299389,20250313,874,[3,11,44],["1",null,"20:40"],null,[3],1,[19.033237,47.391335]],
+  [13,43611396,20250313,523,[5,43,44],["1","A fáján.","20:41"],null,[3],1,[19.025665,47.39434]],
+  [14,80616785,20250313,862,[2,11,44],["1",null,"21:22"],null,[3],1,[19.034618,47.390811]],
+  [15,41844265,20250313,914,[2,44],["20-25","21:23"],null,[3],1,[19.033783,47.391873]]
+])
+
+
+export const dailyData = writable({
+  'type': 'FeatureCollection',
+  'features': [
+  {
+    'type': 'Feature',
+    'properties': {
+      disp: 'Dummy data',
+      id: 9999999999
+    },
+    'geometry': {
+      'type': 'Point',
+      'coordinates': [19.033852,47.3913300]
+    }
+  },
+  ]
 })
 
 export const normalFruits = writable({
@@ -141,7 +93,8 @@ export const normalFruits = writable({
     {
       'type': 'Feature',
       'properties': {
-        data: 'Csajkavirág 1',
+        disp: 'Csajkavirág 1',
+        id: 458500
       },
       'geometry': {
         'type': 'Polygon',
@@ -160,7 +113,8 @@ export const normalFruits = writable({
     {
       'type': 'Feature',
       'properties': {
-        data: 'Csajkavirág 2',
+        disp: 'Csajkavirág 2',
+        id: 458501
       },
       'geometry': {
         'type': 'Polygon',
@@ -179,17 +133,19 @@ export const normalFruits = writable({
     {
       'type': 'Feature',
       'properties': {
-        data: 'Körte',
+        disp: 'Körte',
+        id: 458502
       },
       'geometry': {
         'type': 'Point',
-        'coordinates': [19.033752,47.3913200],
+        'coordinates': [19.033752,47.3913200]
       }
     },
     {
       'type': 'Feature',
       'properties': {
-        data: 'Birs',
+        disp: 'Birs',
+        id: 458503
       },
       'geometry': {
         'type': 'Point',
@@ -199,7 +155,8 @@ export const normalFruits = writable({
     {
       'type': 'Feature',
       'properties': {
-        data: 'Naspolya',
+        disp: 'Naspolya',
+        id: 458504
       },
       'geometry': {
         'type': 'Point',
@@ -209,7 +166,8 @@ export const normalFruits = writable({
     {
       'type': 'Feature',
       'properties': {
-        data: 'Meggy',
+        disp: 'Meggy',
+        id: 458505
       },
       'geometry': {
         'type': 'Point',
@@ -219,7 +177,8 @@ export const normalFruits = writable({
     {
       'type': 'Feature',
       'properties': {
-        data: 'Cseresznye',
+        disp: 'Cseresznye',
+        id: 458506
       },
       'geometry': {
         'type': 'Point',
@@ -229,7 +188,8 @@ export const normalFruits = writable({
     {
       'type': 'Feature',
       'properties': {
-        data: 'Alma',
+        disp: 'Alma',
+        id: 458507
       },
       'geometry': {
         'type': 'Point',
@@ -239,7 +199,8 @@ export const normalFruits = writable({
     {
       'type': 'Feature',
       'properties': {
-        data: 'Szilva',
+        disp: 'Szilva',
+        id: 458508
       },
       'geometry': {
         'type': 'Point',
@@ -256,7 +217,8 @@ export const tropicalFruits = writable({
     {
       'type': 'Feature',
       'properties': {
-        data: 'Papaya',
+        disp: 'Papaya',
+        id: 458510
       },
       'geometry': {
         'type': 'Point',
@@ -266,7 +228,8 @@ export const tropicalFruits = writable({
     {
       'type': 'Feature',
       'properties': {
-        data: 'Mango',
+        disp: 'Mango',
+        id: 458511
       },
       'geometry': {
         'type': 'Point',
@@ -282,22 +245,13 @@ export const passionFruit = writable({
     {
       'type': 'Feature',
       'properties': {
-        data: 'Passionfruit',
+        disp: 'Szilva',
+        id: 458508
       },
       'geometry': {
-        'type': 'Polygon',
-        'coordinates': [
-          [
-            [19.036025,47.390889],
-            [19.035532,47.390671],
-            [19.035049,47.390613],
-            [19.034856,47.390112],
-            [19.035929,47.389872],
-            [19.035907,47.390337],
-            [19.036519,47.390504],
-            [19.036025,47.390889]
-          ]
-        ],
+        'type': 'Point',
+        'param' : [40,10,160],
+        'coordinates': [19.025914,47.394572],
       }
     }
   ]
@@ -306,26 +260,27 @@ export const passionFruit = writable({
 export const gps = writable({
   'type': 'FeatureCollection',
   'features': [
-    {
-      'type': 'Feature',
-      'properties': {
-        data: 'Circle',
-      },
-      'geometry': {
-        'radius': 50,
-        'type': 'Point',
-        'coordinates': [19.032138,47.391548],
-      }
-    },
-    {
-      'type': 'Feature',
-      'properties': {
-        data: 'Point',
-      },
-      'geometry': {
-        'type': 'Point',
-        'coordinates': [19.032138,47.391548],
-      }
-    }
+{
+  'type': 'Feature',
+  'properties': {
+disp: 'Circle',
+id: 1000000
+  },
+  'geometry': {
+'radius': 50,
+'type': 'Point',
+'coordinates': [19.032138,47.391548],
+  }
+},
+{
+  'type': 'Feature',
+  'properties': {
+disp: 'Point',
+  },
+  'geometry': {
+'type': 'Point',
+'coordinates': [19.032138,47.391548],
+  }
+}
   ]
 });

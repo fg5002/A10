@@ -31,7 +31,7 @@
         color: color,
         weight: 1,
         opacity: 1.0,
-        fillOpacity: 1.0  
+        fillOpacity: 0.5  
       }, 
       markerLayer: markerCluster
     }).addTo(map());

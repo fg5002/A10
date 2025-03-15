@@ -17,7 +17,7 @@
 
 <Modal 
   bind:showModal={showCalendar}
-  backdropClasses = "items-start justify-center z-3000"
+  backdropClasses = "items-center justify-start z-3000"
   modalClasses = "w-auto h-auto mt-16"
   idClass = "calendar"
 >

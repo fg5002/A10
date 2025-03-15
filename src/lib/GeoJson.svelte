@@ -4,6 +4,7 @@
   import {mapState} from '$lib/store';
   import '$lib/leaflet.contextmenu.css';
   import '$lib/leaflet.contextmenu.js';
+  import '$lib/l.ellipse.min';
 	import GeoJsonPopup from './GeoJsonPopup.svelte';
 
   
@@ -22,10 +23,6 @@
   const subGroup = getContext('subgroup');
   const grouped = hasContext('subgroup');
 
-  const showCoordinates = (e) => {
-    console.log(e.relatedTarget.feature.geometry.coordinates)
-  }
-
   setContext('layer', ()=> geojson);
 
   $effect(()=> { 
@@ -42,7 +39,7 @@
         if (GeoJsonPopup) {
           mount(GeoJsonPopup, {
             target: popupElement,
-            props: {data: feature.properties.data}
+            props: {disp: feature.properties.disp}
           });
         } else {
           popupElement.innerHTML = '<div>No Popup Provided</div>';
@@ -51,13 +48,19 @@
       },
 
       pointToLayer: (feature, latlng)=> {
-        return feature.geometry.radius ? 
+        /*return feature.geometry.radius ? 
           L.circle(latlng, feature.geometry.radius) : 
-          L.circleMarker(latlng);
+          L.circleMarker(latlng);*/
+        if(feature.geometry.param){
+          let p=feature.geometry.param;
+          return p.length>1 ? L.ellipse(latlng, [p[0],p[1]],p[2]) : L.circle(latlng, parseFloat(p[0]));
+        }else{
+          return L.circleMarker(latlng);
+        }
       },
       style: {      
         fillColor: fillcolor,
-        radius: 8,
+        radius: 7,
         color: color,
         weight: 1,
         opacity: 1.0,
