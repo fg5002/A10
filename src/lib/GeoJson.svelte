@@ -58,6 +58,7 @@
           return L.circleMarker(latlng);
         }
       },
+      
       style: {      
         fillColor: fillcolor,
         radius: 7,
@@ -76,7 +77,7 @@
     }else{
       geojson.addTo(map());
     }
-
+        
     return ()=> {
       geojson?.remove();
       geojson = undefined;

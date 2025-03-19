@@ -2,7 +2,8 @@
   import 'leaflet/dist/leaflet.css';
   import L from 'leaflet';
   import { onMount, setContext } from 'svelte';
-  import {mapState} from '$lib/store';
+  import {mapState, dailyData, storedData} from '$lib/store';
+  import {featureCollectionFromStoredData} from '$lib/editor.svelte.js';
 
   //TODO restore tilelayer
   //TODO Leaflet contextmenu https://github.com/aratcliffe/Leaflet.contextmenu/tree/master
@@ -47,6 +48,10 @@
       map = undefined;
     };
 	});
+
+  /*$effect(()=> {
+    $dailyData = featureCollectionFromStoredData($storedData)
+  })*/
   
 </script>
 

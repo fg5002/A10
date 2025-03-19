@@ -3,7 +3,7 @@
 	let { children } = $props();
 	import { base } from '$app/paths';
   import Calendar from "$lib//Calendar.svelte";
-	import {currDate, virtualKeyboardHeight} from "$lib/store";
+	import {currDate} from "$lib/store";
 
 	let showCalendar = $state(false);
 

@@ -65,6 +65,10 @@
     //toggleEditor();
   } 
   
+  const onSelectItemToEdit = ()=> {
+    showTaxonEditor = true;
+  }
+
 </script>
   
 <div class="w-full h-full">
@@ -85,6 +89,7 @@
 <DailyList 
   bind:showDailyList
   dataList = {$dailyData}
+  onSelectItemToEdit = {onSelectItemToEdit}
   on:editDailyItem = {editDailyItem}
 />
 

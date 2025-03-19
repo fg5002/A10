@@ -47,6 +47,7 @@ export default {
 	},
 
 	plugins: [
+    require("daisyui"),
     plugin(({ addUtilities }) => {
       addUtilities({
         ".field-sizing-content": {
