@@ -63,24 +63,24 @@
     let sh = point(cor);
     switch (shape) {
       case 'circle':
-        sh.geometry.param = [pxToMeter(50)];
+        sh.geometry.param = [pxToMeter(20)];
         break;
       case 'ellipse':
-        sh.geometry.param = [pxToMeter(75), pxToMeter(25), 180];
+        sh.geometry.param = [pxToMeter(35), pxToMeter(20), 180];
         break;
       case 'line':
         sh = lineString([
-          addPoint(cor, 75, 80),
-          //addPoint(cor, 150, 105),
-          addPoint(cor, 250, 15)]);
+          addPoint(cor, 50, 80),
+          //addPoint(cor, 50, 105),
+          addPoint(cor, 50, 15)]);
         break;        
       case 'polygon':
         sh = polygon([
           [
-            addPoint(cor, 175, 0),
-            addPoint(cor, 175, 120),
-            addPoint(cor, 175, 240),
-            addPoint(cor, 175, 0)
+            addPoint(cor, 50, 0),
+            addPoint(cor, 50, 120),
+            addPoint(cor, 50, 240),
+            addPoint(cor, 50, 0)
           ]
         ]);
         break;
@@ -88,24 +88,24 @@
         sh = multiPolygon([
           [
             [
-              addPoint(cor, 175, 0),
-              addPoint(cor, 175, 120),
-              addPoint(cor, 175, 240),
-              addPoint(cor, 175, 0)
+              addPoint(cor, 80, 0),
+              addPoint(cor, 80, 120),
+              addPoint(cor, 80, 240),
+              addPoint(cor, 80, 0)
             ],
             [
-              addPoint(cor, 70, 25),
-              addPoint(cor, 50, 120),
-              addPoint(cor, 45, 240),
-              addPoint(cor, 70, 25)
+              addPoint(cor, 35, 25),
+              addPoint(cor, 25, 120),
+              addPoint(cor, 22, 240),
+              addPoint(cor, 35, 25)
             ]
           ],
           [
             [
-              addPoint(cor, 275, 180),
-              addPoint(cor, 190, 120),
-              addPoint(cor, 190, 240),
-              addPoint(cor, 275, 180)
+              addPoint(cor, 135, 180),
+              addPoint(cor, 95, 120),
+              addPoint(cor, 95, 240),
+              addPoint(cor, 135, 180)
             ]
           ]
         ]);
@@ -115,7 +115,7 @@
     }
     sh.properties.id = Math.random().toString(36).substring(2, 10);
     sh.properties.type = 0;
-    sh.properties.data = 'TestData';
+    sh.properties.disp = sh.properties.id;
     sh.geometry.center = trimCoordArray(pointOnFeature(sh).geometry.coordinates);
     return sh;
   }

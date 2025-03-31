@@ -1,10 +1,9 @@
 <script>
-  import { createEventDispatcher } from 'svelte';
-  import Modal from "./Modal.svelte";
+  import ModalNew from "$lib/Modal_new.svelte";
   import SveltyPicker, {config} from 'svelty-picker';
 
   let {
-    showTimePicker = $bindable(false),
+    modalID,
     time = $bindable(new Date().toISOString().split('T')[1].substring(1, 5)),
     onSubmit
   } = $props();
@@ -20,11 +19,11 @@
 
 </script>
 
-<Modal 
-  bind:showModal={showTimePicker}
-  modalClass = "timepicker" 
-  backdropClasses = "items-center justify-start z-3000"
-  mainClasses = "w-auto h-auto mt-1.5"
+<ModalNew
+  modalID = {modalID}
+  backdropClasses = "items-start"
+  modalClasses = "w-auto p-0 mt-8"
+  closeButton = false
 >
   <SveltyPicker
     inputClasses="p-2 w-auto border-2 border-gray-700 rounded-md"
@@ -35,4 +34,4 @@
     on:input = {submit}
     bind:value = {time}
   />
-</Modal>
+</ModalNew>

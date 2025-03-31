@@ -1,9 +1,11 @@
 <script> 
   import Modal from "$lib/Modal.svelte";
+  import ModalNew from "$lib/Modal_new.svelte";
   import {attributes, observers} from "$lib/attributes.js"
   import {birds} from "$lib/taxon";
   import SveltyPicker, {config} from 'svelty-picker';
   import {currData, storedData, currDate, dailyData} from "$lib/store";
+  import SelectedAttributes from "$lib/SelectedAttributes.svelte";
   import {storedDataToFeatureCollection, currDataItemToFeature, currDataItemToStoredData, featureCollectionFromStoredData} from '$lib/editor.svelte.js';
 
   //TODO update data
@@ -11,6 +13,7 @@
 	
   let {
 		showTaxonEditor = $bindable(),
+    modalID,
     onUpdateGeo
 	} = $props();
 
@@ -29,7 +32,7 @@
 
   config.todayBtn = true;
 
-  $effect(()=> showTaxonEditor && element &&  element.focus());
+  $effect(()=> element &&  element.focus());
 
   $effect(() => element && labels.includes(editorType) && element.focus());
 
@@ -155,8 +158,7 @@
     }
   }
 
-  const changeKeep = (e, key, item) => {
-    e.preventDefault();
+  const changeKeep = (key, item) => {
     const index = $currData[key].findIndex(f => f.id === item.id);
     $currData[key][index].keep = !$currData[key][index].keep;
     element.focus();
@@ -265,12 +267,13 @@
       $storedData = [...$storedData, data];
     }
 
-    showTaxonEditor = false;
+    taxon_editor.close()
     editorType = 'Tax';
     currDataClean();
 
   }
 
+  const focusInput = ()=> element && element.focus()
   
   const clearMainInput = ()=> {
     searchText = "";
@@ -284,7 +287,7 @@
 
   const currDataClean = ()=> {
     Object.keys($currData).forEach(key => {
-      $currData[key] = key != 'aid' && $currData[key].filter(f=> f.keep);
+      //$currData[key] = key != 'aid' && $currData[key].filter(f=> f.keep);
     });
   }
 
@@ -305,16 +308,22 @@
 
 </script>
 
-<Modal
+<!--Modal
 	bind:showModal = {showTaxonEditor}
   bind:this = {modalElement}
 	backdropClasses = "items-center"
 	modalClasses = "flex-col md:h-[60vh] lg:h-[60vh] sm:h-[58vh] w-full bg-violet-100 border-[1px] border-slate-500 divide-y divide-slate-400"
   idClass = "taxoneditor"  
+-->
+
+<ModalNew
+  modalID = {modalID}
+  backdropClasses = "items-start"
+  modalClasses = "h-[55vh] w-full p-0 bg-yellow-100 items-start"
 >
 
   <!--attributetypes-->  
-  <div class="flex items-center justify-between p-2 text-lg bg-red-300 sm:text-xl">
+  <div class="flex items-center justify-start w-full gap-5 p-2 text-lg bg-lime-300 sm:text-xl">
     <div class="flex flex-wrap gap-3">
       {#each labels as nam}
         <label class="flex justify-center items-center
@@ -332,13 +341,6 @@
         </label>
       {/each}
     </div>
-    <!-- svelte-ignore a11y_click_events_have_key_events -->
-    <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-    <img 
-      class="w-5 h-5" src="images/close-small-svgrepo-com.svg"
-      alt="none"
-      onclick = {()=> showTaxonEditor = false}
-    >
     <!-- svelte-ignore a11y_click_events_have_key_events -->
     <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
     <img 
@@ -376,7 +378,7 @@
     </div>
 
     <!--selected attributes searchlist-->
-    <div class="flex flex-col h-full p-2 overflow-y-auto text-sm md: lg:text-lg sm:text-xl bg-cyan-200">
+    <div class="flex flex-col w-full h-full p-2 text-sm md: lg:text-lg sm:text-xl">
 
       {#if searchItems.length === 0}
 
@@ -423,65 +425,12 @@
   
         {:else}
     
-          <!--selected attributes wrapped list-->
-          <div class="flex flex-col gap-1">
-            <!-- svelte-ignore a11y_click_events_have_key_events -->
-            <!-- svelte-ignore a11y_no_static_element_interactions -->
-            {#each Object.keys($currData) as key}      
-              {#if $currData[key].length > 0}
-                <div class="flex flex-wrap gap-1">
-                  {#each $currData[key] as item}
-                    <div 
-                      class="flex gap-2 justify-center items-center px-2 pr-1 border-2 border-violet-300 rounded-md select-none 
-                        {item.keep ? 'bg-yellow-300 border-yellow-500' : 'bg-violet-200 '}"
-                        oncontextmenu = {(e)=> changeKeep(e, key, item)}
-                    >
-                      <div
-                        onclick = {()=> selectedAttributeClick(key, item)}
-                      >
-                        {#if key === 'tax'}
-                          {item.hun} ({item.ltn})
-                        {:else if key === 'atr'}
-                          {item.typ ? item.rep.replace('*', item.value) : item.nam}
-                        {:else if key === 'geo'}
-                          {item.type}: {item.id}
-                        {:else if key === 'aid'}
-                          Edited data id: {item.id}
-                        {:else}
-                          {item.nam}
-                        {/if}
-                      </div>
-                      {#if item.typ}
-                        <!-- svelte-ignore a11y_click_events_have_key_events -->
-                        <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-                        <img 
-                          class="w-5 h-4"
-                          src="images/close-small-svgrepo-com.svg"
-                          alt="none"
-                          onclick = {()=> deleteCurrDataItem(key, item)}
-                        >
-                      {/if}
-                    </div>
-                  {/each}
-                </div>
-              {/if}
-            {/each}
-            <div>
-              {#if $currData.atr.length > 0 && $currData.obs.length > 0 && searchText === ""}
-                <button
-                  class="w-auto px-4 py-1 mt-4 text-xl text-white border-[1px] rounded-md outline-none border-slate-800 
-                  shadow-xl {$currData.aid.length > 0 ? 'bg-violet-400' : 'bg-red-500'}"
-                  onclick = {submitTaxonEditor}
-                >{$currData.aid.length > 0 ? 'Update' : 'Submit'}</button>
-              {/if}
-              <button
-                class="w-auto px-4 py-1 mt-4 text-xl text-white bg-violet-400 border-[1px] rounded-md outline-none border-slate-800 shadow-xl}"
-                onclick = {currDataClearAll}
-              >Clear editor</button>
-            
-            </div>
-          </div>
-
+          <SelectedAttributes 
+            onSubmitTaxonEditor = {submitTaxonEditor}
+            onEditAttribute = {editAttribute}
+            onFocusInput = {focusInput}
+          />
+          
         {/if}
 
       {:else}
@@ -513,4 +462,5 @@
     
     </div>
 
-</Modal>
+<!--/Modal-->
+</ModalNew>

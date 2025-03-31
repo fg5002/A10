@@ -7,7 +7,7 @@ This project is a web application.
 Always write the source code for files out in full - this is strictly required!
 */
 
-import {writable} from 'svelte/store';
+import {writable, derived} from 'svelte/store';
 
 export const virtualKeyboardHeight = writable(0);
 
@@ -18,7 +18,13 @@ export const mapState = writable({
   center: [47.391857,19.03352], 
   zoom: 16,
   baselayer: 'OSM',
-  overlays: ['Daily data' ]
+  overlays: ['Daily data', 'Temp data' ]
+});
+
+export const metersPerPixel = derived([mapState], ([$mapState]) => {
+  let mpp = 40075016.686 * Math.abs(Math.cos($mapState.center[0] * Math.PI/180)) / Math.pow(2, $mapState.zoom+8);
+  //console.log(mpp.toFixed(3))
+  return parseFloat(mpp.toFixed(3));
 });
 
 export const currData = writable({
@@ -36,7 +42,7 @@ export const currData = writable({
   ],
   fil: [
     //{id: null, nam: '20240612-102.jpg', keep: false},
-    //{id: 5555526, nam: '20240612-103.jpg', keep: false},
+    //{id: null, nam: '20240612-103.jpg', keep: false},
     //{id: 125855, nam: '20240612-001.mp3', keep: false},
   ],
   obs: [
@@ -49,16 +55,44 @@ export const currData = writable({
   aid: [
     //{id: 81456, keep: true}
   ],
+  no: {no:null}
 })
 
+export const currData_new = writable({
+  no: null,
+  id: {id: 81456, keep: true},
+  tax: {id: 552, hun: 'Holló', ltn: 'Corvus corax', keep: false},
+  atr: [
+    {id: 3, ord: 3, nam: "hím", abr: "h", rep: "*h", typ: "tel", value: 1, keep: false},
+    //{id: 4, ord: 4, nam: "nőstény", abr: "n", rep: "*n", typ: "tel", value: 4, keep: false},
+    {id: 15, ord: 15, nam: "átrepülő", abr: "at", rep: "null", typ: null, value: null, keep: false},
+    //{id: 24, ord: 24, nam: "gyakoriság", abr: "gy", rep: "*", typ: "lis", dat: "igen ritka, ritka, szórványos, gyakori, tömeges", value: "gyakori", keep: false},
+    //{id: 39, ord: 39, nam: "dátum", abr: "dt", rep: "*", typ: "date", value: '2024-12-11', keep: false},
+    //{id: 43, ord: 43, nam: "note", abr: "nt", rep: "*", typ: "note", value: 'Valami mindig történik.', keep: false},
+    //{id: 44, ord: 44, nam: "rögzítve", abr: "rg", rep: "*", typ: "time", value: '16.15', keep: false},
+  ],
+  fil: [
+    {id: null, nam: '20240612-102.jpg', keep: false},
+    //{id: null, nam: '20240612-103.jpg', keep: false},
+    {id: 125855, nam: '20240612-001.mp3', keep: false},
+  ],
+  obs: [
+    {id: 3, nam: 'Bodor István', keep: true},
+    //{id: 12, nam: 'Őze Péter', keep: true},
+  ],
+  geo: {id: null, type: 'Point', cor: [47.500000,19.250000], par: null, keep: false},
+  reg: '18.32'
+})
 
 export const storedData = writable([
-  [1,45949360,20250319,72,[2,44],["8","21:17"],null,[3,22],1,[19.032247,47.394818]],
+  [1,45949360,20250319,750,[2,44],["8","21:17"],null,[3,22],1,[19.032247,47.394818]],
   [2,63384736,20250319,551,[2,11,35,44],["2",null,null,"21:15"],null,[3,22],1,[19.035488,47.389446]],
   [3,4285453,20250319,750,[3,11,35,44],["3",null,null,"21:19"],null,[3,22],1,[19.035488,47.389446]],
   [4,90294413,20250319,156,[2,15,44],["3",null,"20:38"],null,[3],1,[19.036391,47.393286]],
   [5,47599752,20250319,464,[2,44],[1,'18:38'],null,[22],1,[19.035145,47.395587]],
-  [6,55137035,20250319,528,[2,15,35,44],["4",null,null,"21:01"],null,[7,3],1,[19.033242,47.392443]],
+  [6,55137035,20250319,null,[1,2,35,44],["Valami bogár","4",null,"21:01"],null,[7,3],1,[19.033242,47.392443]],
+  [7,47575752,20250319,null,[1],['Csajkavirág 1'],null,[22],2,[[[19.00452,47.372911],[19.004952,47.372837],[19.005068,47.37262],[19.004977,47.37238],[19.004642,47.37235],[19.004136,47.372527],[19.004111,47.372865],[19.00452,47.372911]]]],
+  [8,47575788,20250319,null,[1],['Csajkavirág 2'],null,[22],2,[[[19.005047,47.373532],[19.004935,47.373753],[19.005034,47.373929],[19.005374,47.373915],[19.005622,47.37379],[19.005801,47.373564],[19.005461,47.373396],[19.005047,47.373532]]]],
 ])
 
 
@@ -97,6 +131,24 @@ export const dailyData = writable({
   },
   ]
 })
+
+export const tempData = writable({
+  'type': 'FeatureCollection',
+  'features': [
+    {
+      'type': 'Feature',
+      'properties': {
+        disp: 'x9999999999x',
+        id: 'x9999999999x'
+      },
+      'geometry': {
+        'type': 'Point',
+        'coordinates': [19.033852,47.3913300]
+      }
+    },
+  ]
+})
+
 
 export const normalFruits = writable({
   'type': 'FeatureCollection',

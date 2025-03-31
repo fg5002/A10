@@ -23,7 +23,7 @@
   onMount(()=> {
 
     deflate = map() && L.deflate({
-      minSize: 80,
+      minSize: 20,
       markerType: L.circleMarker,
       markerOptions: {     
         fillColor: fillcolor,

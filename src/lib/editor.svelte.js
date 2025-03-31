@@ -1,12 +1,13 @@
 import {attributes, observers} from "$lib/attributes.js";
 import {birds} from "$lib/taxon";
-import {currDate, storedData} from "$lib/store";
+import {currDate, storedData, dailyData} from "$lib/store";
 
 
 export const featureCollectionFromStoredData = (data)=> {
   let res = []; //TODO why keyword 'let' is reserved???
   let disp = {};
   data.forEach(item => {
+    disp.no = item[0];
     let tax = item[3] ? birds.filter(f=> f.id === item[3]) : [];
     disp.tax = tax.length > 0 ? {'hun': tax[0].hun, 'ltn': tax[0].ltn} : null;
     let atr = item[4] ? item[4].map((z,i)=> {
@@ -62,6 +63,7 @@ export const currDataItemFromStoredData = (data,id)=> {
   }) : [];
   currDataItem.geo = reData[8] ? [{id: null, type: reData[8] === 1 ? 'Point' : 'Polygon', cor: reData[9], keep: true}] : [];
   currDataItem.aid = id ? [{id: id, keep: true}] : [];
+  currDataItem.no = reData[0]
   console.log('currDataItemFromStoredData');
   return currDataItem;
 }
@@ -116,4 +118,8 @@ export const storedDataToFeatureCollection = (data, dat)=> {
   console.log(date, res.length);
   let geo = {'type': 'FeatureCollection', 'features': res};
   return geo;
+}
+
+export const deleteDailyDataItem = (dailydata, d)=> {
+  dailydata.features = dailydata.features.filter(f=> f.properties.id != parseInt(d));
 }

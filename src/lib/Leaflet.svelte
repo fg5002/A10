@@ -68,7 +68,7 @@
   }
 </style>
 
-<div class="w-full h-full z-1000" bind:this={mapContainer}>
+<div class="w-full h-full" bind:this={mapContainer}>
   {#if map}  
     {@render children?.()}
   {/if}

@@ -1,42 +1,40 @@
 <script>
-  import L, { divIcon } from 'leaflet';
-  import { onMount, getContext } from 'svelte';
+  import {getContext, onMount, onDestroy} from 'svelte';
+  import L from 'leaflet';
 
   let {
-    //content,
     children
   } = $props();
 
-	let popup = $state();
-  let popupContainer = $state();
-
-  let open = $state(false);
-
   const layer = getContext('layer');
 
-  onMount(()=> {
-    popup = L.popup({
-      closeButton : false,
-      autoPanPadding: [80,80],
-      offset: [0,-5],
-      //content: content
-    });
+  let popup;
+  let popupElement;
 
-    layer() && layer().bindPopup(popup)
-      .on('popupopen', ()=> {open = true})
-      .on('popupclose', ()=> {open = false});
-    
-    return ()=> {
-      layer()?.unbindPopup();
-      popup?.remove();
-      popup = undefined;
-    };
-	});
-  
+  let options = {
+    closeButton: false
+  }
+
+  onMount(()=>{
+    popup = L.popup(options);
+    if (layer){
+      layer().bindPopup(popup, options);
+      layer().on('popupopen', ()=> {open=true});
+      layer().on('popupclose', ()=> {open=false});
+    }
+  })
+
+  onDestroy(() => {
+    layer()?.off('popupopen', 'popupclose');
+    layer()?.unbindPopup();
+    popup?.remove();
+    popup = undefined;  
+  });
+
 </script>
 
-<div class="flex justify-center p-0" bind:this={popupContainer}>
-  {#if open}
+<div style="display: none;">
+  <div bind:this={popupElement} class="p-4 border-2 bg-lime-400">
     {@render children?.()}
-  {/if}
+  </div>
 </div>

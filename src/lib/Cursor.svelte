@@ -7,7 +7,7 @@
   import {explode} from '@turf/explode';
   import {distance} from '@turf/distance';
   import * as turf from '@turf/helpers';
-  import {mapState, normalFruits, tropicalFruits, passionFruit, gps} from '$lib/store';
+  import {mapState, dailyData, normalFruits, tropicalFruits, passionFruit, gps} from '$lib/store';
 
   //TODO bring showCursor inside the component
 
@@ -76,7 +76,7 @@
   }
   
   ondrag = (e)=> {
-    cursorSnap(latLngToRevArr(e), $normalFruits, $tropicalFruits, $passionFruit, $gps);
+    cursorSnap(latLngToRevArr(e), $dailyData, $normalFruits, $tropicalFruits, $passionFruit, $gps);
   }
 
   onMount(()=> {

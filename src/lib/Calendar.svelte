@@ -1,9 +1,9 @@
 <script>
-  import Modal from "./Modal.svelte";
+  import ModalNew from "$lib/Modal_new.svelte";
   import SveltyPicker, {config} from 'svelty-picker';
 
   let {
-    showCalendar = $bindable(false),
+    modalID,
     calDate = $bindable(new Date().toISOString().split('T')[0])
   } = $props();
 
@@ -11,23 +11,20 @@
   config.clearBtn = false;
   config.clearToggle = false;
 
-  const toggleCalendar = ()=> showCalendar=!showCalendar;
-
 </script>
 
-<Modal 
-  bind:showModal={showCalendar}
-  backdropClasses = "items-center justify-start z-3000"
-  modalClasses = "w-auto h-auto mt-16"
-  idClass = "calendar"
+<ModalNew
+  modalID = {modalID}
+  backdropClasses = "items-start"
+  modalClasses = "w-auto p-0 mt-8"
+  closeButton = false
 >
   <div class="border rounded-sm shadow-xl border-slate-500">
     <SveltyPicker
       inputClasses="p-2 w-auto border-2 border-gray-700 rounded-md"
       format = "yyyy-mm-dd"
       pickerOnly = true
-      on:input = {toggleCalendar}
       bind:value = {calDate}
     />
   </div>
-</Modal>
+</ModalNew>

@@ -1,0 +1,12 @@
+
+
+select shape typecreate temp shape
+edit temp shape
+delete temp shape
+
+quick point
+  create temp shape
+
+  open taxoneditor
+
+
