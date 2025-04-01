@@ -2,7 +2,7 @@
 
   import L from 'leaflet';
   import 'leaflet/dist/leaflet.css';
-  import {mapState, dailyData} from '$lib/store';
+  import {mapState, dailyData, normalFruits, tropicalFruits, passionFruit} from '$lib/store';
   import 'leaflet.markercluster/dist/leaflet.markercluster.js';
   import 'leaflet.markercluster/dist/MarkerCluster.css';
   import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
@@ -11,6 +11,7 @@
   import "leaflet-spline";
   import GeoJsonPopup from './GeoJsonPopup.svelte';
   import {mount, setContext} from 'svelte';
+  import {addPopup} from '$lib/editor.svelte.js'
 
   let {
     children,
@@ -27,14 +28,28 @@
 
   $effect(()=> onLloadFieldData($dailyData, fieldDataLayer));
 
-  let settlementLayer = L.featureGroup();
   let fieldDataLayer = L.featureGroup();
-  let archiveFieldDataLayer = L.featureGroup();
+  let settlementLayer = L.geoJSON();
+  let archiveFieldDataLayer = L.geoJSON();
+
+  let options = {
+    spiderfyOnMaxZoom: true,
+    showCoverageOnHover: true,
+    zoomToBoundsOnClick: true
+  }
 
   const initLeaflet = (node)=> {
 
     const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', 
-      { minZoom: 7, maxZoom: 19, attribution: '&copy; OpenstreetMap', crossOrigin : true});   
+      { minZoom: 7, maxZoom: 19, attribution: '&copy; OpenstreetMap', crossOrigin : true});
+    const gog = L.tileLayer('https://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}&s=Ga', 
+      { minZoom: 7, maxZoom: 21, attribution: '&copy; Google Maps', crossOrigin : true});
+    const esri = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', 
+      { minZoom: 7, maxZoom: 19, attribution: '&copy; ESRI', crossOrigin : true});
+    const topo = L.tileLayer('https://tile.opentopomap.org/{z}/{x}/{y}.png', 
+      { minZoom: 7, maxZoom: 15, attribution: '&copy; Google Maps', crossOrigin : true});  
+    const tuh = L.tileLayer('http://{s}.map.turistautak.hu/tiles/turistautak/{z}/{x}/{y}.png', 
+      { minZoom: 7, maxZoom: 18, attribution: '&copy; Túristautak.hu', crossOrigin : true});
 
     map = L.map(node, {
       center: $mapState.center, 
@@ -42,7 +57,7 @@
       layers: [osm]
     });
   
-    const markerCluster = L.markerClusterGroup();
+    const markerCluster = L.markerClusterGroup(options);
 
     const deflates = L.deflate({
       minSize: 80, //20
@@ -61,10 +76,47 @@
     deflates.addTo(map);
 
     fieldDataLayer = L.featureGroup.subGroup(deflates).addTo(map);
-    settlementLayer = L.featureGroup.subGroup(deflates);
-    archiveFieldDataLayer = L.featureGroup.subGroup(deflates);
+    settlementLayer = L.featureGroup.subGroup(deflates).addTo(map);
+    archiveFieldDataLayer = L.featureGroup.subGroup(deflates, archiveFieldDataLayer);
 
-    L.control.layers({"OSM": osm},{ 
+    L.geoJSON($normalFruits, {
+      onEachFeature: (feature, layer) => {
+        layer.bindPopup(addPopup(GeoJsonPopup, feature), { closeButton: false, offset: [0, -5] });
+      },
+      pointToLayer: (feature, latlng)=> L.circleMarker(latlng),
+      style: {      
+        fillColor: 'yellowgreen',
+        radius: 7,
+        color: 'black',
+        weight: 1,
+        opacity: 1.0,
+        fillOpacity: 0.5
+      }
+    }).addTo(settlementLayer);
+
+    L.geoJSON($passionFruit, {
+      onEachFeature: (feature, layer) => {
+        layer.bindPopup(addPopup(GeoJsonPopup, feature), { closeButton: false, offset: [0, -5] });
+      },
+      pointToLayer: (feature, latlng)=> L.circleMarker(latlng),
+      style: {      
+        fillColor: 'yellowgreen',
+        radius: 7,
+        color: 'black',
+        weight: 1,
+        opacity: 1.0,
+        fillOpacity: 0.5
+      }
+    }).addTo(archiveFieldDataLayer);
+
+
+    L.control.layers({
+      "OSM": osm,
+      'Google': gog,
+      'ESRI': esri,
+      'Topo': topo,
+      'Turista': tuh
+    },{ 
       "Data": fieldDataLayer, 
       "Settlement": settlementLayer, 
       "Archive": archiveFieldDataLayer 
@@ -101,39 +153,25 @@
         weight: 1,
         fillOpacity: 0.8
       });
+    }else{
+      if (feature.geometry.spline) {
+        shape = L.spline(coords[0].map(c => [c[1], c[0]]), {
+          id: feature.properties.id,
+          color: "blue",
+          weight: 2,
+          fillcolor: 'cyan',
+          fill: true,
+          smoothing: 0.05,
+        });
+      }else{
+        shape =  L.polygon(coords.map(ring => ring.map(c => [c[1], c[0]])), {
+          color: "green",
+          weight: 2,
+          fillOpacity: 0.5
+        });
+      }
     }
-    /*else if (geometryType === "Polygon") {
-      shape = L.polygon(coords.map(ring => ring.map(c => [c[1], c[0]])), {
-        color: "green",
-        weight: 2,
-        fillOpacity: 0.5
-      });
-    }*/
-    else if (geometryType === "Polygon") {
-      shape = L.spline(coords[0].map(c => [c[1], c[0]]), {
-        id: feature.properties.id,
-        color: "blue",
-        weight: 2,
-        fillcolor: 'cyan',
-        fill: true,
-        tension: 0.5 // Adjust for smoothness
-      });
-    }
-    
-    const popupElement = document.createElement('div');
-    if (GeoJsonPopup) {
-      mount(GeoJsonPopup, {
-        target: popupElement,
-        props: {
-          data: feature.properties,
-          onEdit: (e)=> onFeatureEdit(e),
-          openTaxonEditor: ()=> openTaxonEditor()
-        }
-      });
-    }else {
-      popupElement.innerHTML = '<div>No Popup Provided</div>';
-    }
-    shape.bindPopup(popupElement, { closeButton: false, offset: [0, -5] });
+    shape.bindPopup(addPopup(GeoJsonPopup, feature), { closeButton: false, offset: [0, -5] });
     targetLayer.addLayer(shape);
 
   }
@@ -171,7 +209,9 @@
       L.spline(currentPolygon, {         
         fillColor: "yellow",
         color: "green",
+        fill: true,
         weight: 2,
+        smoothing: 0.1,
       })
       .addTo(fieldDataLayer);
     }

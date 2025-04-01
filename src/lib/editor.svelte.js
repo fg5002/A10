@@ -1,7 +1,26 @@
 import {attributes, observers} from "$lib/attributes.js";
 import {birds} from "$lib/taxon";
 import {currDate, storedData, dailyData} from "$lib/store";
+import GeoJsonPopup from '$lib/GeoJsonPopup.svelte'
+import {mount} from 'svelte';
 
+
+export const addPopup = (pp, feature)=> {
+  const popupElement = document.createElement('div');
+  if (pp) {
+    mount(pp, {
+      target: popupElement,
+      props: {
+        data: feature.properties,
+        onEdit: (e)=> onFeatureEdit(e),
+        openTaxonEditor: ()=> openTaxonEditor()
+      }
+    });
+  }else {
+    popupElement.innerHTML = '<div>No Popup Provided</div>';
+  }
+  return popupElement;
+}
 
 export const featureCollectionFromStoredData = (data)=> {
   let res = []; //TODO why keyword 'let' is reserved???
@@ -27,12 +46,13 @@ export const featureCollectionFromStoredData = (data)=> {
       return o;
     }) : [];
     disp.obs = obs.length > 0 ? obs.map(f=> f.nam).join(', ') : null;
-    let geos = {id: null, type: item[8] === 1 ? 'Point' : 'Polygon', cor: item[9], keep: true};
+    let geos = {id: null, type: item[8] < 2 ? 'Point' : 'Polygon', cor: item[9], keep: true};
+    geos.spline = item[8] > 2 ? true : false;
 
     let feature = {
     'type': 'Feature',
     'properties': {disp: disp, id: item[1]},
-    'geometry': {'type': geos.type, 'coordinates': geos.cor}
+    'geometry': {'type': geos.type, 'spline': geos.spline, 'coordinates': geos.cor}
   }
     res = [...res, feature];
     disp = {};

@@ -12,13 +12,6 @@
     $dailyData = $storedData && featureCollectionFromStoredData($storedData)
   });
 
-  /*const loadData = ($dailyData)=> {
-    let dd = featureCollectionFromStoredData($storedData);
-    return 'xx',
-  }*/
-
-
-
 </script>
 
 
